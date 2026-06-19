@@ -33,6 +33,230 @@ set SUB2API_BASE_URL=https://your-sub2api.example.com
 set SUB2API_ADMIN_KEY=your-admin-key
 ```
 
+## Linux 服务器独立目录部署
+
+推荐把本工具部署在独立目录中，不要混放到已有项目目录里。下面示例使用：
+
+- 项目目录：`/opt/model-catalog`
+- 本地监听端口：`18080`
+- 对外访问路径：`https://你的域名/ai-catalog/`
+- 反向代理：Nginx
+- 运行方式：systemd 常驻服务
+
+### 1. 准备独立目录
+
+```bash
+sudo mkdir -p /opt/model-catalog
+sudo chown -R "$USER:$USER" /opt/model-catalog
+cd /opt/model-catalog
+git clone https://github.com/737371031/-.git .
+```
+
+如果服务器不能直接拉 GitHub，也可以把仓库文件上传到 `/opt/model-catalog`，但不要上传本地运行生成的配置、日志、缓存文件。
+
+### 2. 检查运行环境
+
+```bash
+python3 --version
+cd /opt/model-catalog
+python3 -m py_compile server.py
+python3 -m json.tool models.json >/dev/null
+```
+
+如果服务器没有 Python 3，先安装：
+
+```bash
+sudo apt update
+sudo apt install -y python3 git nginx
+```
+
+CentOS / Rocky Linux 可使用：
+
+```bash
+sudo dnf install -y python3 git nginx
+```
+
+### 3. 配置运行时环境变量
+
+不要把真实密钥写进 README 或提交到 Git。建议把密钥放在 `/etc/model-catalog.env`：
+
+```bash
+sudo install -m 600 -o root -g root /dev/null /etc/model-catalog.env
+sudo nano /etc/model-catalog.env
+```
+
+写入以下内容，并替换成你自己的 Sub2API 地址和管理员密钥：
+
+```env
+SUB2API_BASE_URL=https://your-sub2api.example.com
+SUB2API_ADMIN_KEY=your-admin-key
+SUB2API_API_PREFIX=/api/v1
+SUB2API_AUTH_ME_PATH=/auth/me
+SELF_SERVICE_API_PATH=/self-api
+SELF_SERVICE_COOKIE_PATH=/ai-catalog
+```
+
+如果你用独立二级域名部署在根路径，例如 `https://catalog.example.com/`，把 `SELF_SERVICE_COOKIE_PATH` 改成 `/`。
+
+### 4. 创建 systemd 服务
+
+创建独立运行用户：
+
+```bash
+sudo useradd --system --home /opt/model-catalog --shell /usr/sbin/nologin model-catalog || true
+sudo chown -R model-catalog:model-catalog /opt/model-catalog
+```
+
+创建服务文件：
+
+```bash
+sudo nano /etc/systemd/system/model-catalog.service
+```
+
+写入：
+
+```ini
+[Unit]
+Description=Model Catalog Tool
+After=network.target
+
+[Service]
+Type=simple
+User=model-catalog
+Group=model-catalog
+WorkingDirectory=/opt/model-catalog
+EnvironmentFile=/etc/model-catalog.env
+ExecStart=/usr/bin/python3 /opt/model-catalog/server.py --host 127.0.0.1 --port 18080
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/model-catalog
+
+[Install]
+WantedBy=multi-user.target
+```
+
+启动服务：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now model-catalog
+sudo systemctl status model-catalog
+```
+
+本机检查：
+
+```bash
+curl -I http://127.0.0.1:18080/
+curl http://127.0.0.1:18080/api.php?action=status
+```
+
+### 5. 配置 Nginx 子路径反向代理
+
+在已有站点的 `server { ... }` 中加入下面配置。注意 `proxy_pass` 末尾必须带 `/`，这样 `/ai-catalog/` 前缀会被去掉，工具内部的 `api.php`、`models.json` 相对路径才能正常工作。
+
+```nginx
+location = /ai-catalog {
+    return 301 /ai-catalog/;
+}
+
+location /ai-catalog/ {
+    proxy_pass http://127.0.0.1:18080/;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 60s;
+}
+```
+
+检查并重载 Nginx：
+
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+访问：
+
+- 首页：`https://你的域名/ai-catalog/`
+- 管理页：`https://你的域名/ai-catalog/admin.html`
+- 订阅页：`https://你的域名/ai-catalog/subscriptions.html`
+
+第一次进入管理页后，会提示设置管理员密码。密码配置会生成在 `/opt/model-catalog/model-admin-config.json`，不要提交或公开这个文件。
+
+### 6. 首次初始化安全
+
+生产环境第一次访问 `/admin.html` 时会创建管理员密码。如果服务器已经对公网开放，建议先临时限制后台入口，避免别人抢先初始化：
+
+```nginx
+location = /ai-catalog/admin.html {
+    allow 你的公网IP;
+    deny all;
+    proxy_pass http://127.0.0.1:18080/admin.html;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+完成管理员密码设置后，可以继续保留 IP 白名单，也可以改成只允许内网或 VPN 访问。
+
+本工具建议只通过 HTTPS 访问。自助订阅会话 Cookie 带有 `Secure` 标记，HTTP 环境下可能无法正常发送。
+
+### 7. 配置订阅自助入口
+
+如果 Sub2API 支持配置跳转链接，推荐让它跳转到：
+
+```text
+https://你的域名/ai-catalog/subscriptions.html?user_id={用户ID}&token={登录凭证}&endpoint=/ai-catalog/self-api
+```
+
+其中 `endpoint=/ai-catalog/self-api` 是浏览器访问的外部路径，Nginx 会转发到 Python 服务内部的 `/self-api`。
+
+### 8. Python 与 PHP 部署模式
+
+需要订阅自助撤销功能时，推荐使用上面的 Python `server.py` 部署方式。Python 服务会接管 `api.php` 路径，并提供模型目录管理、自助订阅接口代理和审计日志。
+
+`api.php` 只适合 PHP-FPM 环境下的模型目录管理兼容部署，不包含 Sub2API 自助撤销代理逻辑。不要在同一个访问路径下同时让 Nginx 把 `api.php` 交给 PHP-FPM，又把其他路径反代给 Python，否则登录态、配置文件和接口行为会不一致。
+
+### 9. 备份与运行时文件
+
+需要备份的运行时文件：
+
+- `/opt/model-catalog/models.json`：模型目录数据。
+- `/opt/model-catalog/model-admin-config.json`：管理员密码哈希和会话密钥。
+- `/opt/model-catalog/subscription-self-config.json`：订阅自助会话密钥。
+- `/opt/model-catalog/subscription-self-audit.log`：订阅自助操作审计日志。
+
+这些文件可能包含敏感信息，备份时也要限制权限，不要放进公开仓库。
+
+### 10. 更新部署
+
+后续更新代码：
+
+```bash
+cd /opt/model-catalog
+sudo -u model-catalog git pull
+python3 -m py_compile server.py
+python3 -m json.tool models.json >/dev/null
+sudo systemctl restart model-catalog
+sudo systemctl status model-catalog
+```
+
+### 11. 常见排查
+
+- 页面能打开但保存失败：检查 `/opt/model-catalog` 是否属于 `model-catalog` 用户，确认 `models.json` 可写。
+- 管理页提示接口不可用：检查 Nginx 子路径代理是否带了末尾 `/`，并确认 `systemctl status model-catalog` 正常。
+- 订阅自助登录失败：检查 `/etc/model-catalog.env` 中的 `SUB2API_BASE_URL`、`SUB2API_ADMIN_KEY`、`SUB2API_API_PREFIX` 是否与 Sub2API 实际接口一致。
+- 与已有项目冲突：换一个子路径，例如 `/model-list/`，同时修改 Nginx 路径、`SELF_SERVICE_COOKIE_PATH` 和订阅入口里的 `endpoint`。
+- 端口冲突：把 systemd 里的 `--port 18080` 改成未占用端口，并同步修改 Nginx `proxy_pass`。
+- 后台 Cookie 影响同域名其他项目：当前管理员 Cookie 路径是 `/`，同域名其他路径也会携带该 Cookie。通常不会被其他项目识别，但更稳妥的方式是后台保持 IP 白名单、VPN 或独立二级域名。
+
 ## 代码结构
 
 当前工具按页面、接口和数据文件分离：
@@ -51,3 +275,5 @@ set SUB2API_ADMIN_KEY=your-admin-key
 - 初始化 Git 上传准备。
 - 新增 `.gitignore`，排除运行时密钥配置、日志、临时文件和 Python 缓存。
 - 新增 README，记录工具逻辑、代码结构、运行方式和更新记录。
+- 补充 Linux 服务器独立目录部署教程，包含 systemd 常驻服务、Nginx 子路径反向代理、环境变量和排查步骤。
+- 补充首次初始化安全、HTTPS/Cookie、Python/PHP 部署差异和运行时文件备份说明。
