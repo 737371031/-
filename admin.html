@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>模型管理</title>
+  <style>
+    :root {
+      --bg: #f4f7f7;
+      --panel: #ffffff;
+      --panel-2: #eef4f2;
+      --text: #15191f;
+      --muted: #66737f;
+      --line: #dce5e8;
+      --teal: #0f766e;
+      --teal-2: #0b5f59;
+      --teal-soft: #dff5f2;
+      --blue: #2758a7;
+      --blue-soft: #e7eefc;
+      --amber: #b7791f;
+      --amber-soft: #fff2d5;
+      --red: #b42318;
+      --red-soft: #ffe4e0;
+      --shadow: 0 16px 42px rgba(19, 27, 36, 0.08);
+      --radius: 8px;
+      font-family: Inter, "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(39, 88, 167, 0.07) 1px, transparent 1px),
+        var(--bg);
+      background-size: 34px 34px;
+      color: var(--text);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    .page {
+      width: min(1240px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 26px 0 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      background: #13201f;
+      color: #9ff4e7;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      background: #edf3f6;
+      color: #263340;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #e0e9ee;
+    }
+
+    .btn.primary {
+      background: var(--teal);
+      color: #ffffff;
+    }
+
+    .btn.primary:hover {
+      background: var(--teal-2);
+    }
+
+    .btn.danger {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .btn.icon-only {
+      width: 36px;
+      height: 36px;
+      min-height: 36px;
+      padding: 0;
+    }
+
+    .icon {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .notice {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 12px;
+      border: 1px solid var(--amber-soft);
+      border-radius: var(--radius);
+      color: #6b4a11;
+      background: #fff9ea;
+      line-height: 1.45;
+    }
+
+    .notice.show {
+      display: flex;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 370px) minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .panel-body {
+      padding: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      outline: 0;
+    }
+
+    .input,
+    .select {
+      height: 40px;
+      padding: 0 10px;
+    }
+
+    .textarea {
+      min-height: 78px;
+      resize: vertical;
+      padding: 10px;
+      line-height: 1.5;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: rgba(15, 118, 110, 0.65);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .search {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--muted);
+      min-width: 0;
+    }
+
+    .search input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .model-list {
+      max-height: calc(100vh - 246px);
+      overflow: auto;
+    }
+
+    .model-item {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      background: transparent;
+      color: var(--text);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .model-item:last-child {
+      border-bottom: 0;
+    }
+
+    .model-item.active {
+      background: var(--teal-soft);
+    }
+
+    .model-name {
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .model-id {
+      margin-top: 4px;
+      color: var(--muted);
+      font-family: Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      min-height: 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .type-text {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .type-image {
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .type-embed {
+      color: #5d4c14;
+      background: #f3edc4;
+    }
+
+    .type-audio {
+      color: #8b2f62;
+      background: #fde2f0;
+    }
+
+    .type-video {
+      color: #6b3ba8;
+      background: #eee6ff;
+    }
+
+    .status-ready {
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .status-beta {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .status-offline {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .edit-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 4px;
+    }
+
+    .empty {
+      padding: 38px 14px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(14, 20, 26, 0.52);
+      z-index: 30;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .auth-box {
+      width: min(440px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 22px 70px rgba(8, 13, 19, 0.25);
+      padding: 20px;
+    }
+
+    .auth-title {
+      margin: 0 0 6px;
+      font-size: 22px;
+    }
+
+    .auth-copy {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      min-height: 40px;
+      transform: translateX(-50%) translateY(20px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border-radius: var(--radius);
+      background: #141a21;
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: var(--shadow);
+      z-index: 40;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    @media (max-width: 920px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .model-list {
+        max-height: 360px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100vw - 20px, 1240px);
+        padding-top: 18px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .btn.icon-only {
+        width: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M12 3v18" />
+            <path d="M3 12h18" />
+            <path d="M5 5l14 14" />
+            <path d="M19 5 5 19" />
+          </svg>
+        </div>
+        <div>
+          <h1>模型管理</h1>
+          <p class="subtitle" id="subtitle">编辑后保存，展示页会读取同一个 models.json</p>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="index.html" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 3h6v6" />
+            <path d="M10 14 21 3" />
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          </svg>
+          预览
+        </a>
+        <button class="btn" type="button" id="importBtn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <path d="m17 8-5-5-5 5" />
+            <path d="M12 3v12" />
+          </svg>
+          导入
+        </button>
+        <button class="btn" type="button" id="exportBtn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <path d="m7 10 5 5 5-5" />
+            <path d="M12 15V3" />
+          </svg>
+          导出
+        </button>
+        <button class="btn primary" type="button" id="saveBtn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z" />
+            <path d="M17 21v-8H7v8" />
+            <path d="M7 3v5h8" />
+          </svg>
+          保存
+        </button>
+        <button class="btn" type="button" id="logoutBtn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <path d="m16 17 5-5-5-5" />
+            <path d="M21 12H9" />
+          </svg>
+          退出
+        </button>
+      </div>
+    </header>
+
+    <section class="notice" id="notice">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+        <path d="M12 9v4" />
+        <path d="M12 17h.01" />
+      </svg>
+      <span id="noticeText"></span>
+    </section>
+
+    <section class="layout">
+      <aside class="panel">
+        <div class="panel-head">
+          <div class="panel-title">模型列表</div>
+          <button class="btn icon-only primary" type="button" id="addBtn" title="新增模型" aria-label="新增模型">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14" />
+              <path d="M5 12h14" />
+            </svg>
+          </button>
+        </div>
+        <div class="panel-body">
+          <label class="search" for="searchInput">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="搜索模型、ID、供应商" />
+          </label>
+        </div>
+        <div class="model-list" id="modelList"></div>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">编辑详情</div>
+          <div class="actions">
+            <button class="btn icon-only" type="button" id="moveUpBtn" title="上移" aria-label="上移">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m18 15-6-6-6 6" />
+              </svg>
+            </button>
+            <button class="btn icon-only" type="button" id="moveDownBtn" title="下移" aria-label="下移">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <button class="btn icon-only" type="button" id="duplicateBtn" title="复制模型" aria-label="复制模型">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect width="14" height="14" x="8" y="8" rx="2" />
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+              </svg>
+            </button>
+            <button class="btn icon-only danger" type="button" id="deleteBtn" title="删除模型" aria-label="删除模型">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6h18" />
+                <path d="M8 6V4h8v2" />
+                <path d="M19 6l-1 14H6L5 6" />
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="grid-2">
+            <label class="field">
+              <span class="label">目录标题</span>
+              <input class="input" id="catalogTitle" type="text" />
+            </label>
+            <label class="field">
+              <span class="label">更新时间</span>
+              <input class="input" id="updatedAt" type="date" />
+            </label>
+          </div>
+
+          <div id="editor">
+            <div class="grid-2">
+              <label class="field">
+                <span class="label">模型名称</span>
+                <input class="input" id="nameInput" type="text" autocomplete="off" />
+              </label>
+              <label class="field">
+                <span class="label">模型 ID</span>
+                <input class="input" id="idInput" type="text" autocomplete="off" />
+              </label>
+            </div>
+
+            <div class="grid-2">
+              <label class="field">
+                <span class="label">供应商</span>
+                <input class="input" id="providerInput" type="text" autocomplete="off" />
+              </label>
+              <label class="field">
+                <span class="label">类型</span>
+                <select class="select" id="typeInput">
+                  <option value="text">文本</option>
+                  <option value="image">图像</option>
+                  <option value="embed">向量</option>
+                  <option value="audio">音频</option>
+                  <option value="video">视频</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="grid-2">
+              <label class="field">
+                <span class="label">上下文/能力</span>
+                <input class="input" id="contextInput" type="text" autocomplete="off" />
+              </label>
+              <label class="field">
+                <span class="label">价格</span>
+                <input class="input" id="priceInput" type="text" autocomplete="off" />
+              </label>
+            </div>
+
+            <label class="field">
+              <span class="label">状态</span>
+              <select class="select" id="statusInput">
+                <option value="ready">可用</option>
+                <option value="beta">测试</option>
+                <option value="offline">维护</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="label">说明</span>
+              <textarea class="textarea" id="descriptionInput"></textarea>
+            </label>
+
+            <div class="edit-actions">
+              <div class="actions">
+                <button class="btn" type="button" id="clearBtn">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h18" />
+                    <path d="M8 6V4h8v2" />
+                    <path d="M19 6l-1 14H6L5 6" />
+                  </svg>
+                  清空当前
+                </button>
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="button" id="saveModelBtn">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  应用到列表
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty" id="emptyEditor">先新增或选择一个模型</div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal" id="authModal" role="dialog" aria-modal="true">
+    <form class="auth-box" id="authForm">
+      <h2 class="auth-title" id="authTitle">管理登录</h2>
+      <p class="auth-copy" id="authCopy">请输入管理员密码。</p>
+      <label class="field">
+        <span class="label">密码</span>
+        <input class="input" id="passwordInput" type="password" autocomplete="current-password" required />
+      </label>
+      <label class="field" id="confirmField">
+        <span class="label">确认密码</span>
+        <input class="input" id="confirmInput" type="password" autocomplete="new-password" />
+      </label>
+      <button class="btn primary" type="submit" id="authSubmit">进入管理</button>
+    </form>
+  </div>
+
+  <input class="file-input" id="fileInput" type="file" accept="application/json,.json" />
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+    <span id="toastText">已保存</span>
+  </div>
+
+  <script>
+    const fallbackCatalog = {
+      title: "模型服务目录",
+      updatedAt: new Date().toISOString().slice(0, 10),
+      models: []
+    };
+
+    const typeMap = {
+      text: { label: "文本", badge: "type-text" },
+      image: { label: "图像", badge: "type-image" },
+      embed: { label: "向量", badge: "type-embed" },
+      audio: { label: "音频", badge: "type-audio" },
+      video: { label: "视频", badge: "type-video" }
+    };
+
+    const statusMap = {
+      ready: { label: "可用", badge: "status-ready" },
+      beta: { label: "测试", badge: "status-beta" },
+      offline: { label: "维护", badge: "status-offline" }
+    };
+
+    const state = {
+      catalog: JSON.parse(JSON.stringify(fallbackCatalog)),
+      selectedIndex: -1,
+      query: "",
+      authenticated: false,
+      configured: false,
+      dirty: false,
+      apiAvailable: true
+    };
+
+    const fields = {
+      catalogTitle: document.getElementById("catalogTitle"),
+      updatedAt: document.getElementById("updatedAt"),
+      name: document.getElementById("nameInput"),
+      id: document.getElementById("idInput"),
+      provider: document.getElementById("providerInput"),
+      type: document.getElementById("typeInput"),
+      context: document.getElementById("contextInput"),
+      price: document.getElementById("priceInput"),
+      status: document.getElementById("statusInput"),
+      description: document.getElementById("descriptionInput")
+    };
+
+    const modelListEl = document.getElementById("modelList");
+    const editorEl = document.getElementById("editor");
+    const emptyEditorEl = document.getElementById("emptyEditor");
+    const noticeEl = document.getElementById("notice");
+    const noticeTextEl = document.getElementById("noticeText");
+    const authModalEl = document.getElementById("authModal");
+    const authFormEl = document.getElementById("authForm");
+    const authTitleEl = document.getElementById("authTitle");
+    const authCopyEl = document.getElementById("authCopy");
+    const authSubmitEl = document.getElementById("authSubmit");
+    const passwordInputEl = document.getElementById("passwordInput");
+    const confirmInputEl = document.getElementById("confirmInput");
+    const confirmFieldEl = document.getElementById("confirmField");
+    const toastEl = document.getElementById("toast");
+    const toastTextEl = document.getElementById("toastText");
+
+    function safeText(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function normalize(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function showToast(message) {
+      toastTextEl.textContent = message;
+      toastEl.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toastEl.classList.remove("show"), 1500);
+    }
+
+    function showNotice(message) {
+      noticeTextEl.textContent = message;
+      noticeEl.classList.add("show");
+    }
+
+    function hideNotice() {
+      noticeTextEl.textContent = "";
+      noticeEl.classList.remove("show");
+    }
+
+    async function api(action, options = {}) {
+      const method = options.method || "GET";
+      const response = await fetch(`api.php?action=${encodeURIComponent(action)}`, {
+        method,
+        headers: method === "POST" ? { "Content-Type": "application/json" } : undefined,
+        body: method === "POST" ? JSON.stringify(options.body || {}) : undefined,
+        cache: "no-store"
+      });
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (error) {
+        throw new Error("后端接口没有执行，请确认已启用 PHP，或正在运行 Python server.py。");
+      }
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "请求失败");
+      }
+      return data;
+    }
+
+    async function loadStatus() {
+      try {
+        const data = await api("status");
+        state.apiAvailable = true;
+        state.configured = data.configured;
+        state.authenticated = data.authenticated;
+        if (!data.canWriteModels || !data.canWriteConfig) {
+          showNotice("服务器目录当前不可写，保存可能失败。请确认 models.json 和当前目录属于 Web 服务用户。");
+        }
+      } catch (error) {
+        state.apiAvailable = false;
+        state.authenticated = false;
+        showNotice("没有可用的 PHP 保存接口。你仍可编辑并导出 JSON，但无法在网页里直接保存到服务器。");
+      }
+    }
+
+    async function loadCatalog() {
+      try {
+        const data = state.apiAvailable ? await api("load") : null;
+        state.catalog = data ? data.catalog : await fetchCatalogFile();
+      } catch (error) {
+        state.catalog = await fetchCatalogFile();
+      }
+
+      if (!Array.isArray(state.catalog.models)) {
+        state.catalog.models = [];
+      }
+      if (!state.catalog.title) {
+        state.catalog.title = "模型服务目录";
+      }
+      if (!state.catalog.updatedAt) {
+        state.catalog.updatedAt = new Date().toISOString().slice(0, 10);
+      }
+
+      state.selectedIndex = state.catalog.models.length ? 0 : -1;
+      state.dirty = false;
+      fillCatalogFields();
+      fillEditor();
+      renderList();
+      renderEditorState();
+    }
+
+    async function fetchCatalogFile() {
+      const response = await fetch("models.json", { cache: "no-store" });
+      if (!response.ok) return JSON.parse(JSON.stringify(fallbackCatalog));
+      return response.json();
+    }
+
+    function fillCatalogFields() {
+      fields.catalogTitle.value = state.catalog.title || "";
+      fields.updatedAt.value = state.catalog.updatedAt || "";
+    }
+
+    function currentModel() {
+      return state.catalog.models[state.selectedIndex] || null;
+    }
+
+    function fillEditor() {
+      const model = currentModel();
+      if (!model) {
+        for (const key of ["name", "id", "provider", "context", "price", "description"]) {
+          fields[key].value = "";
+        }
+        fields.type.value = "text";
+        fields.status.value = "ready";
+        return;
+      }
+
+      fields.name.value = model.name || "";
+      fields.id.value = model.id || "";
+      fields.provider.value = model.provider || "";
+      fields.type.value = model.type || "text";
+      fields.context.value = model.context || "";
+      fields.price.value = model.price || "";
+      fields.status.value = model.status || "ready";
+      fields.description.value = model.description || "";
+    }
+
+    function renderEditorState() {
+      const hasModel = Boolean(currentModel());
+      editorEl.style.display = hasModel ? "block" : "none";
+      emptyEditorEl.style.display = hasModel ? "none" : "block";
+      document.getElementById("moveUpBtn").disabled = !hasModel || state.selectedIndex <= 0;
+      document.getElementById("moveDownBtn").disabled = !hasModel || state.selectedIndex >= state.catalog.models.length - 1;
+      document.getElementById("duplicateBtn").disabled = !hasModel;
+      document.getElementById("deleteBtn").disabled = !hasModel;
+    }
+
+    function renderList() {
+      const query = normalize(state.query);
+      const items = state.catalog.models
+        .map((model, index) => ({ model, index }))
+        .filter(({ model }) => normalize([model.name, model.id, model.provider, model.description].join(" ")).includes(query));
+
+      if (!items.length) {
+        modelListEl.innerHTML = `<div class="empty">${state.catalog.models.length ? "没有匹配的模型" : "还没有模型，点击右上角新增"}</div>`;
+        return;
+      }
+
+      modelListEl.innerHTML = items.map(({ model, index }) => {
+        const type = typeMap[model.type] || typeMap.text;
+        const status = statusMap[model.status] || statusMap.ready;
+        const active = index === state.selectedIndex ? "active" : "";
+        return `
+          <button class="model-item ${active}" type="button" data-index="${index}">
+            <span>
+              <span class="model-name">${safeText(model.name || "未命名模型")}</span>
+              <span class="model-id">${safeText(model.id || "no-id")}</span>
+            </span>
+            <span>
+              <span class="badge ${type.badge}">${safeText(type.label)}</span>
+              <span class="badge ${status.badge}">${safeText(status.label)}</span>
+            </span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function readModelFromForm() {
+      return {
+        name: fields.name.value.trim(),
+        id: fields.id.value.trim(),
+        provider: fields.provider.value.trim(),
+        type: fields.type.value,
+        context: fields.context.value.trim(),
+        price: fields.price.value.trim(),
+        status: fields.status.value,
+        description: fields.description.value.trim()
+      };
+    }
+
+    function applyCatalogFields() {
+      state.catalog.title = fields.catalogTitle.value.trim() || "模型服务目录";
+      state.catalog.updatedAt = fields.updatedAt.value || new Date().toISOString().slice(0, 10);
+    }
+
+    function applyCurrentModel() {
+      const model = currentModel();
+      if (!model) return false;
+      const next = readModelFromForm();
+      if (!next.name || !next.id) {
+        showToast("模型名称和 ID 必填");
+        return false;
+      }
+
+      const duplicate = state.catalog.models.some((item, index) => item.id === next.id && index !== state.selectedIndex);
+      if (duplicate) {
+        showToast("模型 ID 不能重复");
+        return false;
+      }
+
+      state.catalog.models[state.selectedIndex] = next;
+      applyCatalogFields();
+      state.dirty = true;
+      renderList();
+      renderEditorState();
+      return true;
+    }
+
+    function addModel() {
+      if (currentModel() && !applyCurrentModel()) return;
+      applyCatalogFields();
+      const baseId = "new-model";
+      let id = baseId;
+      let count = 2;
+      while (state.catalog.models.some((model) => model.id === id)) {
+        id = `${baseId}-${count}`;
+        count += 1;
+      }
+      state.catalog.models.push({
+        name: "新模型",
+        id,
+        provider: "Default",
+        type: "text",
+        context: "按服务配置",
+        price: "按量计费",
+        status: "ready",
+        description: ""
+      });
+      state.selectedIndex = state.catalog.models.length - 1;
+      state.dirty = true;
+      fillEditor();
+      renderList();
+      renderEditorState();
+    }
+
+    function deleteModel() {
+      if (!currentModel()) return;
+      const modelName = currentModel().name || currentModel().id;
+      if (!window.confirm(`确定删除「${modelName}」吗？`)) return;
+      state.catalog.models.splice(state.selectedIndex, 1);
+      state.selectedIndex = Math.min(state.selectedIndex, state.catalog.models.length - 1);
+      state.dirty = true;
+      fillEditor();
+      renderList();
+      renderEditorState();
+    }
+
+    function moveModel(direction) {
+      if (!currentModel()) return;
+      if (!applyCurrentModel()) return;
+      const nextIndex = state.selectedIndex + direction;
+      if (nextIndex < 0 || nextIndex >= state.catalog.models.length) return;
+      const list = state.catalog.models;
+      [list[state.selectedIndex], list[nextIndex]] = [list[nextIndex], list[state.selectedIndex]];
+      state.selectedIndex = nextIndex;
+      state.dirty = true;
+      renderList();
+      renderEditorState();
+    }
+
+    function duplicateModel() {
+      const model = currentModel();
+      if (!model) return;
+      if (!applyCurrentModel()) return;
+      let id = `${model.id || "model"}-copy`;
+      let count = 2;
+      while (state.catalog.models.some((item) => item.id === id)) {
+        id = `${model.id || "model"}-copy-${count}`;
+        count += 1;
+      }
+      const copy = { ...model, name: `${model.name || "模型"} 副本`, id };
+      state.catalog.models.splice(state.selectedIndex + 1, 0, copy);
+      state.selectedIndex += 1;
+      state.dirty = true;
+      fillEditor();
+      renderList();
+      renderEditorState();
+    }
+
+    function clearCurrent() {
+      if (!currentModel()) return;
+      fields.name.value = "";
+      fields.id.value = "";
+      fields.provider.value = "";
+      fields.type.value = "text";
+      fields.context.value = "";
+      fields.price.value = "";
+      fields.status.value = "ready";
+      fields.description.value = "";
+    }
+
+    function exportCatalog() {
+      applyCatalogFields();
+      if (currentModel() && !applyCurrentModel()) return;
+      const blob = new Blob([JSON.stringify(state.catalog, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "models.json";
+      link.click();
+      URL.revokeObjectURL(url);
+      showToast("已导出 JSON");
+    }
+
+    function validateCatalog() {
+      applyCatalogFields();
+      if (currentModel() && !applyCurrentModel()) return false;
+      const ids = new Set();
+      for (const model of state.catalog.models) {
+        if (!model.name || !model.id) {
+          showToast("有模型缺少名称或 ID");
+          return false;
+        }
+        if (ids.has(model.id)) {
+          showToast(`模型 ID 重复：${model.id}`);
+          return false;
+        }
+        ids.add(model.id);
+      }
+      return true;
+    }
+
+    async function saveCatalog() {
+      if (!validateCatalog()) return;
+      if (!state.apiAvailable) {
+        exportCatalog();
+        return;
+      }
+      if (!state.authenticated) {
+        showAuth();
+        return;
+      }
+
+      document.getElementById("saveBtn").disabled = true;
+      try {
+        const data = await api("save", { method: "POST", body: { catalog: state.catalog } });
+        state.catalog = data.catalog;
+        state.dirty = false;
+        fillCatalogFields();
+        fillEditor();
+        renderList();
+        renderEditorState();
+        showToast("保存成功");
+      } catch (error) {
+        showToast(error.message);
+      } finally {
+        document.getElementById("saveBtn").disabled = false;
+      }
+    }
+
+    function showAuth() {
+      if (!state.apiAvailable || state.authenticated) return;
+      const setup = !state.configured;
+      authTitleEl.textContent = setup ? "设置管理密码" : "管理登录";
+      authCopyEl.textContent = setup ? "第一次使用需要设置一个至少 8 位的管理密码。" : "请输入管理员密码。";
+      authSubmitEl.textContent = setup ? "设置并进入" : "进入管理";
+      confirmFieldEl.style.display = setup ? "grid" : "none";
+      confirmInputEl.required = setup;
+      passwordInputEl.value = "";
+      confirmInputEl.value = "";
+      authModalEl.classList.add("show");
+      setTimeout(() => passwordInputEl.focus(), 50);
+    }
+
+    async function submitAuth(event) {
+      event.preventDefault();
+      const password = passwordInputEl.value;
+      const setup = !state.configured;
+      if (setup && password !== confirmInputEl.value) {
+        showToast("两次密码不一致");
+        return;
+      }
+      if (password.length < 8) {
+        showToast("密码至少 8 位");
+        return;
+      }
+
+      authSubmitEl.disabled = true;
+      try {
+        await api(setup ? "setup" : "login", { method: "POST", body: { password } });
+        state.configured = true;
+        state.authenticated = true;
+        authModalEl.classList.remove("show");
+        hideNotice();
+        showToast(setup ? "密码已设置" : "登录成功");
+      } catch (error) {
+        showToast(error.message);
+      } finally {
+        authSubmitEl.disabled = false;
+      }
+    }
+
+    async function logout() {
+      if (!state.apiAvailable) return;
+      try {
+        await api("logout", { method: "POST" });
+      } catch (error) {
+        showToast(error.message);
+      }
+      state.authenticated = false;
+      showAuth();
+    }
+
+    document.getElementById("addBtn").addEventListener("click", addModel);
+    document.getElementById("deleteBtn").addEventListener("click", deleteModel);
+    document.getElementById("moveUpBtn").addEventListener("click", () => moveModel(-1));
+    document.getElementById("moveDownBtn").addEventListener("click", () => moveModel(1));
+    document.getElementById("duplicateBtn").addEventListener("click", duplicateModel);
+    document.getElementById("clearBtn").addEventListener("click", clearCurrent);
+    document.getElementById("saveModelBtn").addEventListener("click", () => {
+      if (applyCurrentModel()) showToast("已应用到列表");
+    });
+    document.getElementById("saveBtn").addEventListener("click", saveCatalog);
+    document.getElementById("exportBtn").addEventListener("click", exportCatalog);
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+    document.getElementById("importBtn").addEventListener("click", () => document.getElementById("fileInput").click());
+    document.getElementById("searchInput").addEventListener("input", (event) => {
+      state.query = event.target.value;
+      renderList();
+    });
+
+    modelListEl.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-index]");
+      if (!button) return;
+      if (currentModel() && !applyCurrentModel()) return;
+      state.selectedIndex = Number(button.dataset.index);
+      fillEditor();
+      renderList();
+      renderEditorState();
+    });
+
+    for (const input of Object.values(fields)) {
+      input.addEventListener("input", () => {
+        state.dirty = true;
+      });
+      input.addEventListener("change", () => {
+        state.dirty = true;
+      });
+    }
+
+    document.getElementById("fileInput").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const catalog = JSON.parse(text);
+        if (!Array.isArray(catalog.models)) throw new Error("JSON 中缺少 models 数组");
+        state.catalog = catalog;
+        state.selectedIndex = state.catalog.models.length ? 0 : -1;
+        state.dirty = true;
+        fillCatalogFields();
+        fillEditor();
+        renderList();
+        renderEditorState();
+        showToast("导入成功");
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    authFormEl.addEventListener("submit", submitAuth);
+
+    window.addEventListener("beforeunload", (event) => {
+      if (!state.dirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
+
+    (async function init() {
+      await loadStatus();
+      await loadCatalog();
+      if (state.apiAvailable && !state.authenticated) {
+        showAuth();
+      }
+    })();
+  </script>
+</body>
+</html>

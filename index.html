@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>可用模型列表</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --panel-2: #f0f5f6;
+      --text: #15191f;
+      --muted: #65717e;
+      --line: #dce3ea;
+      --teal: #0f766e;
+      --teal-soft: #dff5f2;
+      --amber: #b7791f;
+      --amber-soft: #fff2d5;
+      --red: #b42318;
+      --red-soft: #ffe4e0;
+      --blue: #2758a7;
+      --blue-soft: #e7eefc;
+      --shadow: 0 16px 44px rgba(23, 31, 43, 0.08);
+      --radius: 8px;
+      font-family: Inter, "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(39, 88, 167, 0.07) 1px, transparent 1px),
+        var(--bg);
+      background-size: 36px 36px;
+      color: var(--text);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius);
+      background: #13201f;
+      color: #9ff4e7;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+    }
+
+    .mark svg,
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .updated {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      min-height: 88px;
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 760;
+      line-height: 1;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .search {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--muted);
+      min-width: 0;
+    }
+
+    .search input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .segments {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+
+    .segment {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .segment.active {
+      background: var(--panel);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(23, 31, 43, 0.12);
+    }
+
+    .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--muted);
+      background: #fbfcfd;
+      font-size: 12px;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .col-model {
+      width: 30%;
+    }
+
+    .col-type {
+      width: 12%;
+    }
+
+    .col-provider {
+      width: 14%;
+    }
+
+    .col-context {
+      width: 12%;
+    }
+
+    .col-price {
+      width: 12%;
+    }
+
+    .col-status {
+      width: 11%;
+    }
+
+    .col-id {
+      width: 14%;
+    }
+
+    .model-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .model-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      background: var(--blue-soft);
+      flex: 0 0 auto;
+    }
+
+    .model-name {
+      font-weight: 750;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .model-desc {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      min-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .type-text {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .type-image {
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .type-embed {
+      color: #5d4c14;
+      background: #f3edc4;
+    }
+
+    .type-audio {
+      color: #8b2f62;
+      background: #fde2f0;
+    }
+
+    .type-video {
+      color: #6b3ba8;
+      background: #eee6ff;
+    }
+
+    .status-ready {
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .status-beta {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .status-offline {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      color: #2f3742;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .copy-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius);
+      display: inline-grid;
+      place-items: center;
+      background: #eef3f7;
+      color: #334155;
+      transition: transform 0.16s ease, background 0.16s ease;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      background: #dfe8ef;
+    }
+
+    .empty {
+      min-height: 220px;
+      display: none;
+      place-items: center;
+      color: var(--muted);
+      text-align: center;
+      padding: 34px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      min-height: 40px;
+      transform: translateX(-50%) translateY(20px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border-radius: var(--radius);
+      background: #141a21;
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: var(--shadow);
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      table,
+      thead,
+      tbody,
+      tr,
+      th,
+      td {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      tr:last-child {
+        border-bottom: 0;
+      }
+
+      td {
+        padding: 8px 0;
+        border-bottom: 0;
+      }
+
+      td[data-label] {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+      }
+
+      td[data-label]::before {
+        content: attr(data-label);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      td:first-child {
+        padding-top: 0;
+      }
+
+      td:first-child::before {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100vw - 20px, 1180px);
+        padding-top: 18px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        min-height: 74px;
+      }
+
+      .model-cell {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 7h16" />
+            <path d="M4 12h16" />
+            <path d="M4 17h10" />
+            <path d="M18 17h2" />
+          </svg>
+        </div>
+        <div>
+          <h1>可用模型</h1>
+          <p class="subtitle" id="catalogSubtitle">模型服务目录</p>
+        </div>
+      </div>
+      <div class="updated" id="updatedAt">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-3-6.7" />
+          <path d="M21 3v6h-6" />
+        </svg>
+        <span>读取中</span>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="模型统计">
+      <div class="stat">
+        <div class="stat-label">全部模型</div>
+        <div class="stat-value" id="totalCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">可用</div>
+        <div class="stat-value" id="readyCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">测试</div>
+        <div class="stat-value" id="betaCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">维护</div>
+        <div class="stat-value" id="offlineCount">0</div>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="筛选">
+      <label class="search" for="modelSearch">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <input id="modelSearch" type="search" autocomplete="off" placeholder="搜索模型、ID、供应商" />
+      </label>
+      <div class="segments" id="typeSegments" role="tablist" aria-label="模型类型"></div>
+    </section>
+
+    <section class="table-wrap" id="tableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-model">模型</th>
+            <th class="col-type">类型</th>
+            <th class="col-provider">供应商</th>
+            <th class="col-context">上下文</th>
+            <th class="col-price">价格</th>
+            <th class="col-status">状态</th>
+            <th class="col-id">ID</th>
+          </tr>
+        </thead>
+        <tbody id="modelRows"></tbody>
+      </table>
+    </section>
+
+    <section class="empty" id="emptyState">没有匹配的模型</section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+    <span>已复制</span>
+  </div>
+
+  <script>
+    const fallbackCatalog = {
+      title: "模型服务目录",
+      updatedAt: "2026-05-04",
+      models: [
+        {
+          name: "GPT-5",
+          id: "gpt-5",
+          provider: "OpenAI",
+          type: "text",
+          context: "按服务配置",
+          price: "按量计费",
+          status: "ready",
+          description: "通用对话、复杂推理、代码与工具调用"
+        },
+        {
+          name: "GPT-5 Mini",
+          id: "gpt-5-mini",
+          provider: "OpenAI",
+          type: "text",
+          context: "按服务配置",
+          price: "低成本",
+          status: "ready",
+          description: "轻量任务、批量处理、快速响应"
+        },
+        {
+          name: "Claude Sonnet",
+          id: "claude-sonnet",
+          provider: "Anthropic",
+          type: "text",
+          context: "按服务配置",
+          price: "按量计费",
+          status: "ready",
+          description: "长文理解、写作、分析与编程"
+        },
+        {
+          name: "Gemini Pro",
+          id: "gemini-pro",
+          provider: "Google",
+          type: "text",
+          context: "按服务配置",
+          price: "按量计费",
+          status: "ready",
+          description: "多模态理解、结构化输出与知识任务"
+        },
+        {
+          name: "DeepSeek Reasoner",
+          id: "deepseek-reasoner",
+          provider: "DeepSeek",
+          type: "text",
+          context: "按服务配置",
+          price: "高性价比",
+          status: "beta",
+          description: "数学、代码、逻辑推理类任务"
+        },
+        {
+          name: "Qwen Max",
+          id: "qwen-max",
+          provider: "Alibaba",
+          type: "text",
+          context: "按服务配置",
+          price: "按量计费",
+          status: "ready",
+          description: "中文场景、问答、企业知识处理"
+        },
+        {
+          name: "Embedding",
+          id: "text-embedding",
+          provider: "Default",
+          type: "embed",
+          context: "向量输出",
+          price: "低成本",
+          status: "ready",
+          description: "检索、RAG、相似度匹配"
+        },
+        {
+          name: "Image Generation",
+          id: "image-generation",
+          provider: "Default",
+          type: "image",
+          context: "图片生成",
+          price: "按张计费",
+          status: "beta",
+          description: "海报、插画、商品图与视觉素材"
+        }
+      ]
+    };
+
+    const typeMap = {
+      all: { label: "全部", badge: "type-text", icon: "list" },
+      text: { label: "文本", badge: "type-text", icon: "message" },
+      image: { label: "图像", badge: "type-image", icon: "image" },
+      embed: { label: "向量", badge: "type-embed", icon: "brackets" },
+      audio: { label: "音频", badge: "type-audio", icon: "audio" },
+      video: { label: "视频", badge: "type-video", icon: "video" }
+    };
+
+    const statusMap = {
+      ready: { label: "可用", badge: "status-ready" },
+      beta: { label: "测试", badge: "status-beta" },
+      offline: { label: "维护", badge: "status-offline" }
+    };
+
+    const iconPaths = {
+      message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />',
+      image: '<rect width="18" height="18" x="3" y="3" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21" />',
+      brackets: '<path d="M8 3H5a2 2 0 0 0-2 2v3" /><path d="M16 3h3a2 2 0 0 1 2 2v3" /><path d="M8 21H5a2 2 0 0 1-2-2v-3" /><path d="M16 21h3a2 2 0 0 0 2-2v-3" />',
+      audio: '<path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />',
+      video: '<path d="m22 8-6 4 6 4V8Z" /><rect width="14" height="12" x="2" y="6" rx="2" />',
+      list: '<path d="M8 6h13" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M3 6h.01" /><path d="M3 12h.01" /><path d="M3 18h.01" />',
+      copy: '<rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />'
+    };
+
+    const state = {
+      catalog: fallbackCatalog,
+      activeType: "all",
+      query: ""
+    };
+
+    const rowsEl = document.getElementById("modelRows");
+    const emptyEl = document.getElementById("emptyState");
+    const tableWrapEl = document.getElementById("tableWrap");
+    const searchEl = document.getElementById("modelSearch");
+    const segmentsEl = document.getElementById("typeSegments");
+    const toastEl = document.getElementById("toast");
+
+    function svgIcon(name) {
+      return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${iconPaths[name] || iconPaths.list}</svg>`;
+    }
+
+    function normalize(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function safeText(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    async function loadCatalog() {
+      try {
+        const response = await fetch("models.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("models.json unavailable");
+        const data = await response.json();
+        if (Array.isArray(data.models)) {
+          state.catalog = data;
+        }
+      } catch (error) {
+        state.catalog = fallbackCatalog;
+      }
+    }
+
+    function typeInfo(type) {
+      return typeMap[type] || { label: type || "其他", badge: "type-text", icon: "list" };
+    }
+
+    function statusInfo(status) {
+      return statusMap[status] || statusMap.ready;
+    }
+
+    function renderSegments() {
+      const types = ["all", ...new Set(state.catalog.models.map((model) => model.type || "text"))];
+      segmentsEl.innerHTML = types.map((type) => {
+        const info = typeInfo(type);
+        const active = state.activeType === type ? "active" : "";
+        const selected = state.activeType === type ? "true" : "false";
+        return `<button class="segment ${active}" type="button" role="tab" aria-selected="${selected}" data-type="${safeText(type)}">${safeText(info.label)}</button>`;
+      }).join("");
+    }
+
+    function modelMatches(model) {
+      const typeMatches = state.activeType === "all" || model.type === state.activeType;
+      const haystack = normalize([
+        model.name,
+        model.id,
+        model.provider,
+        model.type,
+        model.context,
+        model.price,
+        model.status,
+        model.description
+      ].join(" "));
+      return typeMatches && haystack.includes(normalize(state.query));
+    }
+
+    function renderStats() {
+      const models = state.catalog.models;
+      document.getElementById("totalCount").textContent = models.length;
+      document.getElementById("readyCount").textContent = models.filter((model) => model.status === "ready").length;
+      document.getElementById("betaCount").textContent = models.filter((model) => model.status === "beta").length;
+      document.getElementById("offlineCount").textContent = models.filter((model) => model.status === "offline").length;
+    }
+
+    function renderMeta() {
+      document.getElementById("catalogSubtitle").textContent = state.catalog.title || "模型服务目录";
+      const updated = state.catalog.updatedAt || new Date().toISOString().slice(0, 10);
+      document.getElementById("updatedAt").innerHTML = `${svgIcon("list")}<span>更新 ${safeText(updated)}</span>`;
+      document.title = state.catalog.title ? `${state.catalog.title} - 可用模型` : "可用模型列表";
+    }
+
+    function renderRows() {
+      const filtered = state.catalog.models.filter(modelMatches);
+      rowsEl.innerHTML = filtered.map((model) => {
+        const type = typeInfo(model.type);
+        const status = statusInfo(model.status);
+        return `
+          <tr>
+            <td>
+              <div class="model-cell">
+                <div class="model-icon">${svgIcon(type.icon)}</div>
+                <div>
+                  <div class="model-name">${safeText(model.name)}</div>
+                  <div class="model-desc">${safeText(model.description)}</div>
+                </div>
+              </div>
+            </td>
+            <td data-label="类型"><span class="badge ${type.badge}">${safeText(type.label)}</span></td>
+            <td data-label="供应商">${safeText(model.provider)}</td>
+            <td data-label="上下文">${safeText(model.context)}</td>
+            <td data-label="价格">${safeText(model.price)}</td>
+            <td data-label="状态"><span class="badge ${status.badge}">${safeText(status.label)}</span></td>
+            <td data-label="ID">
+              <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <span class="mono">${safeText(model.id)}</span>
+                <button class="copy-btn" type="button" title="复制 ${safeText(model.id)}" aria-label="复制模型 ID" data-copy="${safeText(model.id)}">
+                  ${svgIcon("copy")}
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tableWrapEl.style.display = filtered.length ? "block" : "none";
+      emptyEl.style.display = filtered.length ? "none" : "grid";
+    }
+
+    function render() {
+      renderMeta();
+      renderStats();
+      renderSegments();
+      renderRows();
+    }
+
+    function showToast() {
+      toastEl.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toastEl.classList.remove("show"), 1400);
+    }
+
+    async function copyText(value) {
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch (error) {
+        const input = document.createElement("input");
+        input.value = value;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+      }
+      showToast();
+    }
+
+    searchEl.addEventListener("input", (event) => {
+      state.query = event.target.value;
+      renderRows();
+    });
+
+    segmentsEl.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-type]");
+      if (!button) return;
+      state.activeType = button.dataset.type;
+      renderSegments();
+      renderRows();
+    });
+
+    rowsEl.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-copy]");
+      if (!button) return;
+      copyText(button.dataset.copy);
+    });
+
+    loadCatalog().then(render);
+  </script>
+</body>
+</html>

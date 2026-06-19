@@ -1,0 +1,86 @@
+{
+  "title": "模型服务目录",
+  "updatedAt": "2026-05-04",
+  "models": [
+    {
+      "name": "GPT-5",
+      "id": "gpt-5",
+      "provider": "OpenAI",
+      "type": "text",
+      "context": "按服务配置",
+      "price": "按量计费",
+      "status": "ready",
+      "description": "通用对话、复杂推理、代码与工具调用"
+    },
+    {
+      "name": "GPT-5 Mini",
+      "id": "gpt-5-mini",
+      "provider": "OpenAI",
+      "type": "text",
+      "context": "按服务配置",
+      "price": "低成本",
+      "status": "ready",
+      "description": "轻量任务、批量处理、快速响应"
+    },
+    {
+      "name": "Claude Sonnet",
+      "id": "claude-sonnet",
+      "provider": "Anthropic",
+      "type": "text",
+      "context": "按服务配置",
+      "price": "按量计费",
+      "status": "ready",
+      "description": "长文理解、写作、分析与编程"
+    },
+    {
+      "name": "Gemini Pro",
+      "id": "gemini-pro",
+      "provider": "Google",
+      "type": "text",
+      "context": "按服务配置",
+      "price": "按量计费",
+      "status": "ready",
+      "description": "多模态理解、结构化输出与知识任务"
+    },
+    {
+      "name": "DeepSeek Reasoner",
+      "id": "deepseek-reasoner",
+      "provider": "DeepSeek",
+      "type": "text",
+      "context": "按服务配置",
+      "price": "高性价比",
+      "status": "beta",
+      "description": "数学、代码、逻辑推理类任务"
+    },
+    {
+      "name": "Qwen Max",
+      "id": "qwen-max",
+      "provider": "Alibaba",
+      "type": "text",
+      "context": "按服务配置",
+      "price": "按量计费",
+      "status": "ready",
+      "description": "中文场景、问答、企业知识处理"
+    },
+    {
+      "name": "Embedding",
+      "id": "text-embedding",
+      "provider": "Default",
+      "type": "embed",
+      "context": "向量输出",
+      "price": "低成本",
+      "status": "ready",
+      "description": "检索、RAG、相似度匹配"
+    },
+    {
+      "name": "Image Generation",
+      "id": "image-generation",
+      "provider": "Default",
+      "type": "image",
+      "context": "图片生成",
+      "price": "按张计费",
+      "status": "beta",
+      "description": "海报、插画、商品图与视觉素材"
+    }
+  ]
+}

@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>订阅自助管理</title>
+  <style>
+    :root {
+      --bg: #f5f7f2;
+      --panel: #ffffff;
+      --panel-2: #eef3ea;
+      --text: #18201b;
+      --muted: #667268;
+      --line: #dbe4d7;
+      --green: #16715a;
+      --green-2: #105d4a;
+      --green-soft: #def3eb;
+      --blue: #28599a;
+      --blue-soft: #e5edf9;
+      --amber: #9b6816;
+      --amber-soft: #fff0cc;
+      --red: #b42318;
+      --red-soft: #ffe3df;
+      --shadow: 0 16px 42px rgba(29, 45, 33, 0.08);
+      --radius: 8px;
+      font-family: "Aptos", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(90deg, rgba(22, 113, 90, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(40, 89, 154, 0.06) 1px, transparent 1px),
+        var(--bg);
+      background-size: 34px 34px;
+      color: var(--text);
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .page {
+      width: min(980px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 30px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      color: #bff6e6;
+      background: #17231d;
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .btn {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-radius: var(--radius);
+      background: #e8f0ec;
+      color: #26352d;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #dce8e2;
+    }
+
+    .btn.primary {
+      color: #ffffff;
+      background: var(--green);
+    }
+
+    .btn.primary:hover {
+      background: var(--green-2);
+    }
+
+    .btn.danger {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .status {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .status.error {
+      color: var(--red);
+      background: #fff7f5;
+      border-color: #ffd1ca;
+    }
+
+    .warning {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 14px;
+      border: 2px solid var(--red);
+      border-radius: var(--radius);
+      background: #fff1ee;
+      color: #7f1d16;
+      box-shadow: var(--shadow);
+      line-height: 1.55;
+    }
+
+    .warning-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--red);
+    }
+
+    .warning-list {
+      margin: 0;
+      padding-left: 22px;
+      font-weight: 760;
+    }
+
+    .warning-note {
+      margin: 0;
+      font-weight: 820;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfa;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 820;
+    }
+
+    .list {
+      display: grid;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 15px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .item:last-child {
+      border-bottom: 0;
+    }
+
+    .name {
+      font-weight: 820;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .badge {
+      min-height: 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.active {
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .badge.revoked,
+    .badge.expired,
+    .badge.cancelled,
+    .badge.canceled {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .badge.other {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .empty {
+      padding: 38px 14px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(15, 22, 18, 0.54);
+      z-index: 20;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .dialog {
+      width: min(420px, 100%);
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 22px 70px rgba(8, 13, 19, 0.25);
+    }
+
+    .dialog h2 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .dialog p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100vw - 20px, 980px);
+        padding-top: 18px;
+      }
+
+      .topbar,
+      .panel-head,
+      .item {
+        align-items: flex-start;
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+
+      .item {
+        display: grid;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M20 7 10 17l-5-5" />
+            <path d="M14 7h6v6" />
+          </svg>
+        </div>
+        <div>
+          <h1>订阅自助管理</h1>
+          <p class="subtitle">查看当前账号订阅并撤销不再需要的项目</p>
+        </div>
+      </div>
+      <button class="btn" type="button" id="refreshBtn">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-3-6.7" />
+          <path d="M21 3v6h-6" />
+        </svg>
+        刷新
+      </button>
+    </header>
+
+    <section class="status" id="statusBox">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 6v6l4 2" />
+        <circle cx="12" cy="12" r="9" />
+      </svg>
+      <span id="statusText">正在校验身份</span>
+    </section>
+
+    <section class="warning" aria-label="撤销订阅前确认">
+      <div class="warning-title">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+        </svg>
+        <span>注意！！！</span>
+      </div>
+      <p class="warning-note">使用此自助撤销订阅功能前，请检查是否符合下方这两点：</p>
+      <ol class="warning-list">
+        <li>订阅额度完全使用完</li>
+        <li>还没有叠加订阅</li>
+      </ol>
+      <p class="warning-note">如果叠加订阅了，请找售后进行重置扣减天数。该自助会直接撤销订阅，不会保留任何时间、额度等。</p>
+      <p class="warning-note">如果订阅已经使用完，需要叠加，请先在此自助中撤销订阅之后，再重新购买！！</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div class="panel-title">我的订阅</div>
+        <button class="btn" type="button" id="logoutBtn">退出</button>
+      </div>
+      <div class="list" id="list"></div>
+    </section>
+  </main>
+
+  <div class="modal" id="confirmModal" role="dialog" aria-modal="true">
+    <div class="dialog">
+      <h2>撤销订阅</h2>
+      <p id="confirmText">撤销后该订阅将无法继续使用。</p>
+      <div class="dialog-actions">
+        <button class="btn" type="button" id="cancelDialogBtn">返回</button>
+        <button class="btn danger" type="button" id="confirmCancelBtn">确认撤销</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function renderNotFound() {
+      document.title = "404 Not Found";
+      document.body.innerHTML = '<main style="min-height:100vh;display:grid;place-items:center;margin:0;font-family:Arial,sans-serif;color:#111;"><section><h1 style="font-size:32px;margin:0 0 8px;">404 Not Found</h1><p style="margin:0;color:#666;">Not Found</p></section></main>';
+    }
+
+    const state = {
+      userId: null,
+      subscriptions: [],
+      pendingCancel: null,
+      loading: false,
+      endpoint: ""
+    };
+
+    const statusBox = document.getElementById("statusBox");
+    const statusText = document.getElementById("statusText");
+    const listEl = document.getElementById("list");
+    const modalEl = document.getElementById("confirmModal");
+    const confirmTextEl = document.getElementById("confirmText");
+    const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+
+    function safeText(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function setStatus(message, isError = false) {
+      statusText.textContent = message;
+      statusBox.classList.toggle("error", isError);
+    }
+
+    async function api(action, options = {}) {
+      const method = options.method || "GET";
+      if (!state.endpoint) {
+        throw new Error("Not found");
+      }
+      const response = await fetch(`${state.endpoint}?action=${encodeURIComponent(action)}`, {
+        method,
+        credentials: "same-origin",
+        headers: method === "POST" ? { "Content-Type": "application/json" } : undefined,
+        body: method === "POST" ? JSON.stringify(options.body || {}) : undefined,
+        cache: "no-store"
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "请求失败");
+      }
+      return data;
+    }
+
+    function statusClass(status) {
+      const value = String(status || "").toLowerCase();
+      if (value === "active") return "active";
+      if (["revoked", "expired", "cancelled", "canceled"].includes(value)) return value;
+      return "other";
+    }
+
+    function statusLabel(status) {
+      const map = {
+        active: "可用",
+        revoked: "已撤销",
+        expired: "已过期",
+        cancelled: "已取消",
+        canceled: "已取消"
+      };
+      const key = String(status || "").toLowerCase();
+      return map[key] || (status || "未知");
+    }
+
+    function canCancel(item) {
+      return String(item.status || "").toLowerCase() === "active";
+    }
+
+    function renderList() {
+      if (!state.subscriptions.length) {
+        listEl.innerHTML = '<div class="empty">当前账号没有可展示的订阅</div>';
+        return;
+      }
+
+      listEl.innerHTML = state.subscriptions.map((item) => {
+        const name = item.group_name || item.platform || `订阅 #${item.id}`;
+        const expires = item.expires_at ? `到期 ${item.expires_at}` : "未显示到期时间";
+        const quota = item.quota ? `额度 ${item.used || 0}/${item.quota}` : "";
+        const action = canCancel(item)
+          ? `<button class="btn danger" type="button" data-cancel="${safeText(item.id)}">撤销</button>`
+          : '<button class="btn" type="button" disabled>不可撤销</button>';
+        return `
+          <article class="item">
+            <div>
+              <div class="name">${safeText(name)}</div>
+              <div class="meta">
+                <span class="badge ${statusClass(item.status)}">${safeText(statusLabel(item.status))}</span>
+                <span>ID ${safeText(item.id)}</span>
+                <span>${safeText(expires)}</span>
+                ${quota ? `<span>${safeText(quota)}</span>` : ""}
+              </div>
+            </div>
+            ${action}
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadSubscriptions() {
+      state.loading = true;
+      document.getElementById("refreshBtn").disabled = true;
+      try {
+        const data = await api("subscriptions");
+        state.subscriptions = data.subscriptions || [];
+        renderList();
+        setStatus(`已登录用户 ${data.user_id || state.userId || ""}，共 ${state.subscriptions.length} 个订阅`);
+      } catch (error) {
+        setStatus(error.message, true);
+        listEl.innerHTML = '<div class="empty">请从 Sub2API 用户中心重新打开此页面</div>';
+      } finally {
+        state.loading = false;
+        document.getElementById("refreshBtn").disabled = false;
+      }
+    }
+
+    async function bootstrapFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("user_id");
+      const token = params.get("token");
+      const endpoint = params.get("endpoint") || params.get("api");
+      if (window.location.search) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      if (userId && token && endpoint && endpoint.startsWith("/") && !endpoint.includes("://")) {
+        state.endpoint = endpoint.replace(/\/+$/, "");
+        const data = await api("start", { method: "POST", body: { user_id: userId, token } });
+        state.userId = data.user_id;
+        return true;
+      }
+
+      return false;
+    }
+
+    function openConfirm(id) {
+      const item = state.subscriptions.find((sub) => String(sub.id) === String(id));
+      if (!item) return;
+      state.pendingCancel = item;
+      confirmTextEl.textContent = `确认撤销「${item.group_name || item.platform || `订阅 #${item.id}`}」？撤销后该订阅将无法继续使用。`;
+      modalEl.classList.add("show");
+    }
+
+    async function cancelPending() {
+      if (!state.pendingCancel) return;
+      confirmCancelBtn.disabled = true;
+      try {
+        const data = await api("cancel", {
+          method: "POST",
+          body: { subscription_id: state.pendingCancel.id }
+        });
+        state.subscriptions = data.subscriptions || [];
+        renderList();
+        setStatus(data.message || "订阅已撤销");
+        modalEl.classList.remove("show");
+        state.pendingCancel = null;
+      } catch (error) {
+        setStatus(error.message, true);
+      } finally {
+        confirmCancelBtn.disabled = false;
+      }
+    }
+
+    listEl.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-cancel]");
+      if (!button) return;
+      openConfirm(button.dataset.cancel);
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", loadSubscriptions);
+    document.getElementById("cancelDialogBtn").addEventListener("click", () => modalEl.classList.remove("show"));
+    confirmCancelBtn.addEventListener("click", cancelPending);
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        await api("logout", { method: "POST" });
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+      state.subscriptions = [];
+      renderList();
+      setStatus("已退出，请从 Sub2API 用户中心重新打开此页面");
+    });
+
+    (async function init() {
+      try {
+        const authenticated = await bootstrapFromQuery();
+        if (!authenticated) {
+          renderNotFound();
+          return;
+        }
+        await loadSubscriptions();
+      } catch (error) {
+        renderNotFound();
+      }
+    })();
+  </script>
+</body>
+</html>
