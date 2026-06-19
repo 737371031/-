@@ -22,9 +22,9 @@ start.bat
 
 默认访问地址：
 
-- 首页：`http://127.0.0.1:8080/`
-- 管理页：`http://127.0.0.1:8080/admin.html`
-- 订阅页：`http://127.0.0.1:8080/subscriptions.html`
+- 首页：`http://127.0.0.1:18080/`
+- 管理页：`http://127.0.0.1:18080/admin.html`
+- 订阅页：`http://127.0.0.1:18080/subscriptions.html`
 
 订阅自助功能需要通过环境变量配置 Sub2API 服务地址和管理员密钥：
 
@@ -277,3 +277,4 @@ sudo systemctl status model-catalog
 - 新增 README，记录工具逻辑、代码结构、运行方式和更新记录。
 - 补充 Linux 服务器独立目录部署教程，包含 systemd 常驻服务、Nginx 子路径反向代理、环境变量和排查步骤。
 - 补充首次初始化安全、HTTPS/Cookie、Python/PHP 部署差异和运行时文件备份说明。
+- 将默认本地端口从 `8080` 调整为 `18080`，降低与已有项目或常见服务冲突的概率。
