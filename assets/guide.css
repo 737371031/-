@@ -766,8 +766,7 @@ code {
   gap: 10px;
 }
 
-.file-chips span,
-.file-chips a,
+.file-chips > a,
 .download-inline span {
   min-height: 40px;
   padding: 0 14px;
@@ -780,15 +779,15 @@ code {
   font-size: 14px;
 }
 
-.file-chips a {
+.file-chips > a {
   gap: 10px;
   text-decoration: none;
   color: var(--text);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
-.file-chips a:hover,
-.file-chips a:focus-visible {
+.file-chips > a:hover,
+.file-chips > a:focus-visible {
   transform: translateY(-1px);
   box-shadow: 0 10px 20px rgba(53, 34, 17, 0.08);
   border-color: rgba(123, 91, 58, 0.22);
