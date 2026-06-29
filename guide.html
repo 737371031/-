@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="assets/guide.css" />
 </head>
 <body>
+  <div class="help-strip">
+    <div class="help-strip-inner">
+      <div>
+        <strong>卡住了先加售后群</strong>
+        <p>售后 QQ 群：1090601928。不会配、截图看不懂、导入失败，都先直接进群。</p>
+      </div>
+      <div class="help-pill">售后群 1090601928</div>
+    </div>
+  </div>
+
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -24,10 +34,10 @@
         </div>
       </div>
       <nav class="nav" aria-label="页面导航">
-        <a href="#overview">总览</a>
+        <a href="#overview">先看这里</a>
         <a href="#steps">图文步骤</a>
         <a href="#downloads">下载资源</a>
-        <a href="#faq">注意事项</a>
+        <a href="#faq">常见问题</a>
       </nav>
     </div>
   </header>
@@ -37,60 +47,75 @@
       <div class="hero-grid">
         <article class="hero-copy">
           <div>
-            <span class="eyebrow">面向新用户和常用工具接入</span>
-            <h1>一步步接好 Wuzu API，少踩坑，少走弯路。</h1>
-            <p>这个页面把原始文档整理成了可执行的图文流程。你可以先创建 API Key，再按自己使用的工具进入对应分支：CCS、Codex 生图 Skill、OpenCode。页面里的截图和安装包都走项目本地资源，不再依赖飞书外链。</p>
+            <span class="eyebrow">新用户先看，老用户也建议过一遍</span>
+            <h1>先拿到正确的 key，再按你的工具接入。</h1>
+            <p>这不是纯说明页，而是一张可以照着做的图文操作单。你只需要先选自己是哪一种用户：要创建 API Key、要接入 CCS、要配 Codex 生图，还是要做 OpenCode 接入。每条线都给你拆成了步骤、结果和高频错误。</p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#steps">开始看教程</a>
-              <a class="button button-secondary" href="#downloads">先拿下载包</a>
+              <a class="button button-primary" href="#steps">开始跟着做</a>
+              <a class="button button-secondary" href="#downloads">先下载工具</a>
             </div>
-          </div>
-          <div class="hero-meta">
-            <div class="metric">
-              <div class="metric-label">主推荐域名</div>
-              <div class="metric-value">wuzuapi.com</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">图文截图</div>
-              <div class="metric-value">25 张</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">覆盖工具</div>
-              <div class="metric-value">3 条线</div>
+            <div class="hero-checklist">
+              <div class="hero-check">
+                <strong>主站域名优先</strong>
+                <p>请求地址默认用 <code>https://wuzuapi.com</code>，不要把加速域名当常用入口。</p>
+              </div>
+              <div class="hero-check">
+                <strong>生图 key 单独创建</strong>
+                <p>GPT Image 2 的 key 不和普通对话 key 共用，先分开建，后面就省事很多。</p>
+              </div>
+              <div class="hero-check">
+                <strong>分组选错会直接出问题</strong>
+                <p>创建 key 时必须选自己的订阅分组，余额组不是订阅分组替代品。</p>
+              </div>
+              <div class="hero-check">
+                <strong>看不懂截图就点开放大</strong>
+                <p>本页所有截图都支持点击放大，能直接看清输入框、按钮和路径位置。</p>
+              </div>
             </div>
           </div>
         </article>
 
-        <aside class="hero-panel">
-          <h2>先记住这 4 件事</h2>
-          <div class="alert-list">
-            <div class="alert-card theme-accent">
-              <strong>优先使用主站</strong>
-              <p>默认把 API 请求地址设为 <code>https://wuzuapi.com</code>。加速域名可用，但会有波动。</p>
-            </div>
-            <div class="alert-card theme-olive">
-              <strong>生图 key 和对话 key 分开建</strong>
-              <p>GPT Image 2 使用单独 key，不能和普通对话 key 共用。</p>
-            </div>
-            <div class="alert-card">
-              <strong>创建 key 时要选对分组</strong>
-              <p>分组必须选自己的订阅分组，余额组只适合余额使用。</p>
-            </div>
-          </div>
+        <aside class="hero-side">
+          <section class="support-card">
+            <h2>不会配就先进群</h2>
+            <p>有些问题不是你不会，是工具版本、系统环境或者路径不一样。卡住时别硬顶，直接带截图进群最快。</p>
+            <div class="support-number">1090601928</div>
+            <div class="support-note">售后 QQ 群，建议在创建 key 或导入失败时第一时间联系。</div>
+          </section>
 
+          <h3>你先看哪一条</h3>
           <div class="quick-links">
             <a class="quick-link" href="#tab-api">
-              <strong>我先要创建 API Key</strong>
-              <p>从兑换码兑换开始，完成到 key 复制。</p>
+              <strong>我是新用户，先创建 API Key</strong>
+              <p>从兑换码兑换、创建 key、选择正确分组开始。</p>
             </a>
             <a class="quick-link" href="#tab-ccs">
-              <strong>我要接入 CCS</strong>
-              <p>下载 CC-Switch，导入配置，启用并校验模型。</p>
+              <strong>我已经有 key，要接入 CCS</strong>
+              <p>直接去下载 CC-Switch、导入配置、检查模型。</p>
             </a>
             <a class="quick-link" href="#tab-image">
-              <strong>我要用 Codex 生图 Skill</strong>
-              <p>下载 zip，解压到 `.codex/skills`，配置 key 后启用。</p>
+              <strong>我要配 Codex 生图 Skill</strong>
+              <p>下载 zip，放到 `.codex/skills`，配生图专用 key。</p>
             </a>
+            <a class="quick-link" href="#tab-opencode">
+              <strong>我要做 OpenCode 接入</strong>
+              <p>复制完整 JSON，走自定义供应商接入流程。</p>
+            </a>
+          </div>
+
+          <div class="signal-grid">
+            <div class="signal-card accent">
+              <strong>最重要的规则</strong>
+              <p>主站域名优先，生图 key 与对话 key 分开建，模型改完记得重启 IDE。</p>
+            </div>
+            <div class="signal-card olive">
+              <strong>截图都能点开放大</strong>
+              <p>如果按钮太小、路径太密，直接点图看大图，不需要来回缩放浏览器。</p>
+            </div>
+            <div class="signal-card blue">
+              <strong>下载资源都已本地化</strong>
+              <p>安装包、zip、教程截图已经放进项目，不再依赖飞书外链。</p>
+            </div>
           </div>
         </aside>
       </div>
@@ -101,33 +126,33 @@
         <div class="section-header">
           <div>
             <h2>按你的工具入口走</h2>
-            <p>不要把三条接入线混着看。先完成 API Key 获取，再进入自己要用的工具模块，速度会快很多。</p>
+            <p>不要把 CCS、Codex 生图、OpenCode 三条接入线混着看。你只需要先完成 API Key 获取，然后进入自己要用的那一条。</p>
           </div>
         </div>
         <div class="tool-grid">
           <article class="tool-card">
-            <span class="tag">准备入口</span>
+            <span class="tag">新用户起点</span>
             <h3>API Key</h3>
-            <p>兑换购买码、创建密钥、选择订阅分组、复制 key，是所有后续接入的前置动作。</p>
-            <a href="#tab-api">打开 API Key 教程</a>
+            <p>兑换购买码、创建密钥、选对分组、复制 key，是后面所有接入动作的前置条件。</p>
+            <a href="#tab-api">先做这一步</a>
           </article>
           <article class="tool-card">
-            <span class="tag">桌面工具</span>
+            <span class="tag">桌面工具接入</span>
             <h3>CCS / CC-Switch</h3>
-            <p>适合把 key 导入桌面工具并管理模型配置，也包含模型名改版和 IDE 重启提醒。</p>
-            <a href="#tab-ccs">打开 CCS 教程</a>
+            <p>适合导入到桌面工具里长期使用，也包含模型名指定版本修改和 IDE 重启提醒。</p>
+            <a href="#tab-ccs">进入 CCS 教程</a>
           </article>
           <article class="tool-card">
             <span class="tag">Codex 生图</span>
             <h3>GPT Image 2 Skill</h3>
-            <p>适合需要网页生图或在 Codex 里通过 `$` 命令调用生图 Skill 的用户。</p>
-            <a href="#tab-image">打开生图教程</a>
+            <p>适合需要网页生图或通过 `$` 命令调用 Codex 生图 Skill 的用户。</p>
+            <a href="#tab-image">进入生图教程</a>
           </article>
           <article class="tool-card">
-            <span class="tag">高级接入</span>
+            <span class="tag">高级配置</span>
             <h3>OpenCode</h3>
-            <p>通过复制完整 JSON、添加供应商、自定义配置来完成接入，适合更熟悉工具配置的用户。</p>
-            <a href="#tab-opencode">打开 OpenCode 教程</a>
+            <p>通过完整 JSON、自定义供应商、Base URL、Key 和模型配置完成接入。</p>
+            <a href="#tab-opencode">进入 OpenCode 教程</a>
           </article>
         </div>
       </section>
@@ -136,7 +161,22 @@
         <div class="steps-header">
           <div>
             <h2>图文步骤</h2>
-            <p>每个模块都按“先做什么、再做什么、哪里最容易踩坑”整理好了。你可以按模块走，不用来回翻文档。</p>
+            <p>这里按原文档整理成了图文步骤，截图都可以点开放大。你直接照着当前模块一步一步做就行。</p>
+          </div>
+        </div>
+
+        <div class="guide-rules">
+          <div class="guide-rule">
+            <strong>规则 1</strong>
+            <p>如果你还没有 key，就先看 API Key 获取，再继续后面的 CCS、Codex 生图或 OpenCode。</p>
+          </div>
+          <div class="guide-rule">
+            <strong>规则 2</strong>
+            <p>CCS 里用到的 API 请求地址，请按文档优先改成 `https://wuzuapi.com`。</p>
+          </div>
+          <div class="guide-rule">
+            <strong>规则 3</strong>
+            <p>文档里写了“保存之后，重启 ide 软件即可”的地方，就按文档重启。</p>
           </div>
         </div>
 
@@ -149,49 +189,41 @@
 
         <div class="tab-panel" data-tab-panel="api">
           <div class="step-list">
-            <article class="step-card featured">
-              <div class="step-inner">
-                <div class="step-body">
-                  <span class="step-kicker">步骤 0 · 先改对 API 域名</span>
-                  <h3>主站域名优先，国内加速域名不要当默认入口</h3>
-                  <p>日常使用以 <code>https://wuzuapi.com</code> 为主。文档里也特别提醒了，国内加速域名虽然能用，但会有访问波动，所以在 CCS 或其他工具里最好把 API 请求地址改回主站。</p>
-                  <div class="code-line">https://wuzuapi.com</div>
-                  <div class="callout accent">
-                    <strong>提醒</strong>
-                    <p>如果你之前填的是加速域名，先改回主站，再继续后面的导入和测试。</p>
-                  </div>
-                </div>
-                <div class="step-media">
-                  <div class="step-media-frame">
-                    <img src="assets/guide-images/01-base-url-config.png" alt="主站域名修改示意图" loading="lazy" />
-                  </div>
-                  <div class="step-media-caption">图 1：在 CCS 的 API 请求地址里改成主站域名即可。</div>
-                </div>
-              </div>
-            </article>
-
             <article class="step-card">
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 1</span>
-                  <h3>先兑换购买码</h3>
-                  <p>如果你是刚购买的新用户，先在网站里输入兑换码完成兑换，再继续创建 API Key。</p>
+                  <h3>1 兑换码兑换</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>在网站中输入购买的兑换码进行兑换。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>兑换地址</strong>
+                      <p><code>https://wuzuapi.com/redeem</code></p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>下一步</strong>
+                      <p>兑换完成后，继续创建 API 密钥。</p>
+                    </div>
+                  </div>
                   <div class="code-line">https://wuzuapi.com/redeem</div>
-                  <ul class="bullet-list">
-                    <li>兑换成功后再去 key 页面，避免后面创建时没有可用分组。</li>
-                    <li>如果兑换失败，优先核对购买码是否完整、是否多复制了空格。</li>
-                  </ul>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/02-redeem-code.png" alt="兑换码兑换页面" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/02-redeem-code.png" data-zoom-title="图 2：兑换码兑换页面" data-zoom-alt="兑换码兑换页面">
+                        <img src="assets/guide-images/02-redeem-code.png" alt="兑换码兑换页面" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/03-create-api-key.png" alt="API Key 创建页面" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/03-create-api-key.png" data-zoom-title="图 3：API Key 创建页面" data-zoom-alt="API Key 创建页面">
+                        <img src="assets/guide-images/03-create-api-key.png" alt="API Key 创建页面" loading="lazy" />
+                      </button>
                     </div>
                   </div>
-                  <div class="step-media-caption">图 2-3：先兑换，再进入密钥页面准备创建 key。</div>
+                  <div class="step-media-caption">图 2-3：在网站中输入购买的兑换码进行兑换，然后进入 API 密钥页面。</div>
                 </div>
               </div>
             </article>
@@ -200,28 +232,43 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 2</span>
-                  <h3>创建 API Key 并选对分组</h3>
-                  <p>创建 key 时最容易错的是分组选择。这里必须选择你自己的订阅分组，余额组只适合余额方案使用，不能替代订阅分组。</p>
-                  <ul class="check-list">
-                    <li>创建一个普通对话 key，用于 CCS 或日常模型调用。</li>
-                    <li>如果后面还要用 GPT Image 2，再额外创建一个生图 key。</li>
-                    <li>创建完成后把 key 复制好，后续导入和手动配置都要用到。</li>
-                  </ul>
+                  <span class="risk-badge">高风险</span>
+                  <h3>2 创建 API 密钥</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>选择分组。注意：分组需要选择自己的订阅分组，余额组只限余额使用。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>文档重点</strong>
+                      <p>分组需要选择自己的订阅分组，余额组只限余额使用。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>完成结果</strong>
+                      <p>得到 key。</p>
+                    </div>
+                  </div>
                   <div class="callout olive">
                     <strong>注意</strong>
-                    <p>生图 key 和对话 key 不可以共用，建议一开始就分开创建。</p>
+                    <p>分组选自己的订阅分组，不要选余额组。</p>
                   </div>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/04-select-group.png" alt="分组选择截图" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/04-select-group.png" data-zoom-title="图 4：分组选择" data-zoom-alt="分组选择截图">
+                        <img src="assets/guide-images/04-select-group.png" alt="分组选择截图" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 4：注意：分组需要选择自己的订阅分组，余额组只限余额使用。</p>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/05-choose-cli-tool.png" alt="得到 API Key 截图" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/05-choose-cli-tool.png" data-zoom-title="图 5：获取 key 后继续接入" data-zoom-alt="获取 key 后继续接入">
+                        <img src="assets/guide-images/05-choose-cli-tool.png" alt="得到 API Key 截图" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 5：得到 key。</p>
                   </div>
-                  <div class="step-media-caption">图 4-5：选对分组，然后复制好生成出来的 key。</div>
+                  <div class="step-media-caption">图 4-5：创建 API 密钥时先选对分组，完成后得到 key。</div>
                 </div>
               </div>
             </article>
@@ -233,20 +280,63 @@
             <article class="step-card featured">
               <div class="step-inner">
                 <div class="step-body">
-                  <span class="step-kicker">步骤 3</span>
-                  <h3>下载 CC-Switch，准备导入配置</h3>
-                  <p>如果你要用 CCS，先下载对应系统的安装包。项目里已经放了 Windows 和 macOS 两个安装包，部署后可以直接从网页下载，不必再跳 GitHub。</p>
-                  <ul class="bullet-list">
-                    <li>Windows：使用 `.msi` 安装包。</li>
-                    <li>macOS：使用 `.dmg` 安装包。</li>
-                    <li>如果你更习惯原始发布页，也可以跳转 GitHub Release 查看。</li>
-                  </ul>
+                  <span class="step-kicker">CCS 前置</span>
+                  <span class="risk-badge">必做</span>
+                  <h3>重要！国内访问域名修改！！</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>请主要以主站域名进行使用：<code>https://wuzuapi.com</code>。国内加速：<code>https://cdn.wuzuapi.com</code>。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>文档提醒</strong>
+                      <p>国内加速多多少少会有访问波动等问题。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>直接修改</strong>
+                      <p>请直接在 ccs，API 请求地址，修改成：<code>https://wuzuapi.com</code>。</p>
+                    </div>
+                  </div>
+                  <div class="code-line">保存即可</div>
                 </div>
                 <div class="step-media">
                   <div class="step-media-frame">
-                    <img src="assets/guide-images/06-import-ccs-from-key-page.png" alt="CCS 下载入口截图" loading="lazy" />
+                    <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/01-base-url-config.png" data-zoom-title="图 1：在 CCS 中修改 API 请求地址" data-zoom-alt="在 CCS 中修改 API 请求地址">
+                      <img src="assets/guide-images/01-base-url-config.png" alt="在 CCS 中修改 API 请求地址" loading="lazy" />
+                    </button>
                   </div>
-                  <div class="step-media-caption">图 6：文档原始下载入口，网页里会提供本地下载按钮。</div>
+                  <div class="step-media-caption">图 1：请直接在 ccs，API 请求地址，修改成：https://wuzuapi.com，保存即可。</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-inner">
+                <div class="step-body">
+                  <span class="step-kicker">步骤 3</span>
+                  <h3>3。选择需要使用的 cli 工具，使用 CCS 导入</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>CCS 下载链接：<a href="https://github.com/farion1231/cc-switch/releases/tag/v3.13.0" target="_blank" rel="noreferrer">GitHub Releases v3.13.0</a>。或者直接取用下载区里的 Windows / macOS 安装包。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>安装包</strong>
+                      <p><code>CC-Switch-v3.13.0-Windows.msi</code></p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>安装包</strong>
+                      <p><code>CC-Switch-v3.13.0-macOS.dmg</code></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="step-media">
+                  <div class="step-media-frame">
+                    <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/06-import-ccs-from-key-page.png" data-zoom-title="图 6：在网站 key 页面进入导入 CCS 入口" data-zoom-alt="在网站 key 页面进入导入 CCS 入口">
+                      <img src="assets/guide-images/06-import-ccs-from-key-page.png" alt="在网站 key 页面进入导入 CCS 入口" loading="lazy" />
+                    </button>
+                  </div>
+                  <div class="step-media-caption">图 6：在网站 key 页面里选择需要使用的 CLI 工具，并进入导入 CCS 的入口。</div>
                 </div>
               </div>
             </article>
@@ -255,26 +345,59 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 4</span>
-                  <h3>在 key 页面使用导入 CCS 功能</h3>
-                  <p>网站里的 key 页面支持直接导入 CCS。按照页面提示点击导入，系统会弹出打开提示，确认后启用对应配置即可。</p>
-                  <ul class="bullet-list">
-                    <li>导入后如果没有自动启用，手动把新配置切到启用状态。</li>
-                    <li>如果出现多个配置，优先检查使用的是不是刚刚导入的那个。</li>
-                  </ul>
+                  <h3>在网站 key 页面，使用导入 ccs 功能</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>在网站 key 页面，使用导入 ccs 功能。弹出点击打开。启用即可。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>原文操作</strong>
+                      <p>弹出点击打开。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>原文操作</strong>
+                      <p>启用即可。</p>
+                    </div>
+                  </div>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/07-open-import-dialog.png" alt="网站导入 CCS 按钮" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/07-open-import-dialog.png" data-zoom-title="图 7：在网站 key 页面使用导入 CCS 功能" data-zoom-alt="在网站 key 页面使用导入 CCS 功能">
+                        <img src="assets/guide-images/07-open-import-dialog.png" alt="在网站 key 页面使用导入 CCS 功能" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/08-enable-import.png" alt="弹出打开确认" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/08-enable-import.png" data-zoom-title="图 8：弹出点击打开" data-zoom-alt="弹出点击打开">
+                        <img src="assets/guide-images/08-enable-import.png" alt="弹出点击打开" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/09-open-ccs-config.png" alt="启用配置" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/09-open-ccs-config.png" data-zoom-title="图 9：启用即可" data-zoom-alt="启用即可">
+                        <img src="assets/guide-images/09-open-ccs-config.png" alt="启用即可" loading="lazy" />
+                      </button>
                     </div>
                   </div>
-                  <div class="step-media-caption">图 7-9：导入、确认打开、启用配置。</div>
+                  <div class="step-media-caption">图 7-9：在网站 key 页面点击导入 CCS；弹出点击打开；进入后启用即可。</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <div class="step-inner">
+                <div class="step-body">
+                  <span class="step-kicker">注意！！！</span>
+                  <span class="risk-badge">提醒</span>
+                  <h3>GPT5.5 最新模型添加指南</h3>
+                  <div class="step-summary">
+                    <strong>文档提醒</strong>
+                    <p>注意 5.5 比 5.4 贵两倍。</p>
+                  </div>
+                  <div class="callout accent">
+                    <strong>注意</strong>
+                    <p>GPT5.5 最新模型添加指南。注意 5.5 比 5.4 贵两倍。</p>
+                  </div>
                 </div>
               </div>
             </article>
@@ -283,24 +406,32 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 5</span>
-                  <h3>按需修改模型名并重启 IDE</h3>
-                  <p>如果你要接最新指定版本，文档要求把模型名从 <code>gpt-5.4</code> 改成 <code>gpt-5.4-2026-03-05</code>。修改后一定要重启 IDE，这一步很关键。</p>
-                  <div class="code-line">gpt-5.4-2026-03-05</div>
-                  <div class="callout accent">
-                    <strong>成本提醒</strong>
-                    <p>文档里同时提醒了 GPT 5.5 的成本更高，大约是 5.4 的两倍，切模型前先确认预算。</p>
+                  <span class="risk-badge">必做</span>
+                  <h3>ccs 修改模型配置指南</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>打开 ccs 工具，点击需要修改的配置。进入之后，在模型名称处将 <code>gpt-5.4</code> 改成 <code>gpt-5.4-2026-03-05</code>。</p>
                   </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>模型名称</strong>
+                      <p><code>gpt-5.4</code> 改成 <code>gpt-5.4-2026-03-05</code></p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>保存之后</strong>
+                      <p>重启 ide 软件即可。</p>
+                    </div>
+                  </div>
+                  <div class="code-line">gpt-5.4-2026-03-05</div>
                 </div>
                 <div class="step-media">
-                  <div class="gallery">
-                    <div class="step-media-frame">
-                      <img src="assets/guide-images/10-change-model-name.png" alt="CCS 修改配置入口" loading="lazy" />
-                    </div>
-                    <div class="step-media-frame">
+                  <div class="step-media-frame">
+                    <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/10-change-model-name.png" data-zoom-title="图 10：模型名称修改截图" data-zoom-alt="模型名称修改截图">
                       <img src="assets/guide-images/10-change-model-name.png" alt="模型名称修改截图" loading="lazy" />
-                    </div>
+                    </button>
                   </div>
-                  <div class="step-media-caption">图 10：打开配置，改模型名，保存后重启 IDE。</div>
+                  <p class="media-note">图 10：进入之后，在模型名称处将 gpt-5.4 改成 gpt-5.4-2026-03-05。</p>
+                  <div class="step-media-caption">图 10：修改模型名称后，保存之后，重启 ide 软件即可。</div>
                 </div>
               </div>
             </article>
@@ -313,18 +444,33 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 6</span>
-                  <h3>先分清两种使用方式：网页生图或 Codex Skill</h3>
-                  <p>GPT Image 2 既可以直接跑网页版本，也可以解压成 Codex Skill，通过 <code>$</code> 命令在 Codex 里调用。两种方式都需要先配置生图专用 key。</p>
+                  <h3>GPT IMAGE 2 生图 wuzu api skill 使用指南</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>新老用户，skill 文件请下载下方这个。可以网页直接使用，也可以导入 codex 的 skill 技能使用 gpt image 2。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>skill 文件</strong>
+                      <p><code>gpt-image-2-generator-share-20260520-140609.zip</code></p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>文档提醒</strong>
+                      <p>可以网页直接使用，也可以导入 codex 的 skill 技能使用 gpt image 2。</p>
+                    </div>
+                  </div>
                   <div class="callout olive">
-                    <strong>再次强调</strong>
-                    <p>生图 key 和普通对话 key 必须分开，少了这一步后面几乎一定会出错。</p>
+                    <strong>注意！！！！！</strong>
+                    <p>生图 key 跟对话 key 不可以一样，必须创建两个 key 进行使用！！</p>
                   </div>
                 </div>
                 <div class="step-media">
                   <div class="step-media-frame">
-                    <img src="assets/guide-images/11-gpt-image-2-overview.png" alt="GPT Image 2 Skill 说明图" loading="lazy" />
+                    <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/11-gpt-image-2-overview.png" data-zoom-title="图 11：GPT Image 2 说明图" data-zoom-alt="GPT Image 2 说明图">
+                      <img src="assets/guide-images/11-gpt-image-2-overview.png" alt="GPT Image 2 Skill 说明图" loading="lazy" />
+                    </button>
                   </div>
-                  <div class="step-media-caption">图 11：这一块主要是 GPT Image 2 Skill 和网页版本的接入说明。</div>
+                  <div class="step-media-caption">图 11：可以网页直接使用，也可以导入 codex 的 skill 技能使用 gpt image 2。</div>
                 </div>
               </div>
             </article>
@@ -333,24 +479,39 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 7</span>
-                  <h3>解压 zip 到 `.codex/skills` 目录</h3>
-                  <p>把下载到的 <code>gpt-image-2-generator-share-20260520-140609.zip</code> 解压到本机用户目录下的 <code>.codex/skills</code> 中。</p>
+                  <h3>第一步：将 skill 解压至 `.codex/skills` 目录中</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>将 skill 解压至：<code>C:\Users\你的电脑用户名\.codex\skills</code> 目录中。解压之后，配置你的 key。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>第一步</strong>
+                      <p>将 skill 解压至 <code>.codex/skills</code> 目录中。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>第二步</strong>
+                      <p>解压之后，配置你的 key。</p>
+                    </div>
+                  </div>
                   <div class="code-line">C:\Users\你的电脑用户名\.codex\skills</div>
-                  <ul class="bullet-list">
-                    <li>解压完成后检查目录层级，不要多一层外壳文件夹。</li>
-                    <li>如果你是多个技能一起装，留意不要覆盖已有内容。</li>
-                  </ul>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/12-unzip-skill-to-codex-skills.png" alt="将 skill 解压到目录" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/12-unzip-skill-to-codex-skills.png" data-zoom-title="图 12：解压到技能目录" data-zoom-alt="解压到技能目录">
+                        <img src="assets/guide-images/12-unzip-skill-to-codex-skills.png" alt="将 skill 解压到目录" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 12：以下是傻瓜式教程。</p>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/13-configure-image-key.png" alt="技能目录傻瓜教程截图" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/13-configure-image-key.png" data-zoom-title="图 13：配置生图 key" data-zoom-alt="配置生图 key">
+                        <img src="assets/guide-images/13-configure-image-key.png" alt="配置生图 key" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 13：解压之后，配置你的 key。</p>
                   </div>
-                  <div class="step-media-caption">图 12-13：zip 解压位置和目录放置示意。</div>
+                  <div class="step-media-caption">图 12-13：先将 skill 解压到 `.codex/skills`，然后配置你的 key。</div>
                 </div>
               </div>
             </article>
@@ -359,15 +520,29 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 8</span>
-                  <h3>配置 key，然后在 Codex 里调用</h3>
-                  <p>解压完成后，把生图 key 填到对应配置里。之后打开 Codex，使用 <code>$</code> 命令选择 GPT Image 2 生图技能，就可以开始生成图片。</p>
-                  <p>如果你更喜欢图形界面，也可以直接双击启用网页版本，但同样要先把 key 配好。</p>
+                  <h3>使用 `$` 命令选择 GPT image 2 生图技能，或直接启用网页版</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>然后打开你的 codex 软件或者插件，使用 <code>$</code> 命令，选择 GPT image 2 生图技能。你也可以直接双击启用网页版本，也需要先配置 key！</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>Skill 模式</strong>
+                      <p>使用 <code>$</code> 命令，选择 GPT image 2 生图技能。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>网页模式</strong>
+                      <p>直接双击启用网页版本，也需要先配置 key。</p>
+                    </div>
+                  </div>
                 </div>
                 <div class="step-media">
                   <div class="step-media-frame">
-                    <img src="assets/guide-images/14-open-gpt-image-2-skill-or-web.png" alt="启用网页版本" loading="lazy" />
+                    <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/14-open-gpt-image-2-skill-or-web.png" data-zoom-title="图 14：启用 Skill 或网页版本" data-zoom-alt="启用 Skill 或网页版本">
+                      <img src="assets/guide-images/14-open-gpt-image-2-skill-or-web.png" alt="启用网页版本" loading="lazy" />
+                    </button>
                   </div>
-                  <div class="step-media-caption">图 14：先配 key，再通过 Skill 或网页模式使用。</div>
+                  <div class="step-media-caption">图 14：使用 `$` 命令选择 GPT image 2 生图技能，或者直接双击启用网页版。</div>
                 </div>
               </div>
             </article>
@@ -380,26 +555,41 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 9</span>
-                  <h3>先在网站中找到 OpenCode 所需密钥内容</h3>
-                  <p>OpenCode 接入不是只复制一个 key，而是先找到网站里提供的 OpenCode 配置入口，复制完整 JSON 配置内容，再导入到 CCSwitch 的自定义供应商中。</p>
-                  <div class="callout accent">
-                    <strong>高频错误</strong>
-                    <p>最容易出错的是 JSON 没复制完整，或者把原有内容没删干净就直接粘贴。</p>
+                  <h3>点击使用密钥，找到 opencode</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>点击使用密钥。找到 opencode。直接复制完好的 json。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>第一步</strong>
+                      <p>点击使用密钥，找到 opencode。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>第二步</strong>
+                      <p>直接复制完好的 json。</p>
+                    </div>
                   </div>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/15-opencode-use-secret-key.png" alt="点击使用密钥" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/15-opencode-use-secret-key.png" data-zoom-title="图 15：点击使用密钥" data-zoom-alt="点击使用密钥">
+                        <img src="assets/guide-images/15-opencode-use-secret-key.png" alt="点击使用密钥" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/16-opencode-find-entry.png" alt="找到 OpenCode" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/16-opencode-find-entry.png" data-zoom-title="图 16：找到 OpenCode" data-zoom-alt="找到 OpenCode">
+                        <img src="assets/guide-images/16-opencode-find-entry.png" alt="找到 OpenCode" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/17-opencode-copy-json.png" alt="复制完整 JSON" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/17-opencode-copy-json.png" data-zoom-title="图 17：复制完整 JSON" data-zoom-alt="复制完整 JSON">
+                        <img src="assets/guide-images/17-opencode-copy-json.png" alt="复制完整 JSON" loading="lazy" />
+                      </button>
                     </div>
                   </div>
-                  <div class="step-media-caption">图 15-17：找到 OpenCode，并复制完整 JSON 内容。</div>
+                  <div class="step-media-caption">图 15-17：点击使用密钥，找到 opencode，然后直接复制完好的 json。</div>
                 </div>
               </div>
             </article>
@@ -408,29 +598,50 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 10</span>
-                  <h3>在 CCSwitch 里添加供应商并改成自定义配置</h3>
-                  <p>打开 CCSwitch 后找到 OpenCode，点击添加供应商，选择自定义配置。进入编辑页后，把原来的 CCSwitch 默认内容删掉，再把刚才复制的 JSON 粘贴进去。</p>
-                  <ul class="bullet-list">
-                    <li>不要只追加内容，要替换完整配置。</li>
-                    <li>如果 JSON 粘贴后格式错乱，先回到网站重新复制一遍。</li>
-                  </ul>
+                  <h3>打开 ccswich，找到 opencode，点击添加供应商</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>使用自定义配置。拉动到最底下，删除 ccswich 的内容，将刚刚复制的内容粘贴进去。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>第一步</strong>
+                      <p>使用自定义配置。</p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>第二步</strong>
+                      <p>删除 ccswich 的内容，将刚刚复制的内容粘贴进去。</p>
+                    </div>
+                  </div>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/18-ccswitch-add-provider.png" alt="打开 CCSwitch 并添加供应商" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/18-ccswitch-add-provider.png" data-zoom-title="图 18：添加供应商" data-zoom-alt="添加供应商">
+                        <img src="assets/guide-images/18-ccswitch-add-provider.png" alt="打开 CCSwitch 并添加供应商" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 18：打开 ccswich，找到 opencode，点击添加供应商。</p>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/19-use-custom-config.png" alt="选择自定义配置" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/19-use-custom-config.png" data-zoom-title="图 19：使用自定义配置" data-zoom-alt="使用自定义配置">
+                        <img src="assets/guide-images/19-use-custom-config.png" alt="选择自定义配置" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 19：使用自定义配置。</p>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/20-paste-json-content-1.png" alt="删除原内容并粘贴 JSON" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/20-paste-json-content-1.png" data-zoom-title="图 20：粘贴 JSON 第一步" data-zoom-alt="粘贴 JSON 第一步">
+                        <img src="assets/guide-images/20-paste-json-content-1.png" alt="删除原内容并粘贴 JSON" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 20：拉动到最底下，删除 ccswich 的内容，将刚刚复制的内容粘贴进去。</p>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/21-paste-json-content-2.png" alt="继续完善配置界面" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/21-paste-json-content-2.png" data-zoom-title="图 21：粘贴 JSON 第二步" data-zoom-alt="粘贴 JSON 第二步">
+                        <img src="assets/guide-images/21-paste-json-content-2.png" alt="继续完善配置界面" loading="lazy" />
+                      </button>
                     </div>
+                    <p class="media-note">图 21：继续将刚刚复制的内容粘贴进去。</p>
                   </div>
-                  <div class="step-media-caption">图 18-21：添加供应商、切换自定义配置、替换为完整 JSON。</div>
+                  <div class="step-media-caption">图 18-21：打开 ccswich，找到 opencode，使用自定义配置，并将刚刚复制的内容粘贴进去。</div>
                 </div>
               </div>
             </article>
@@ -439,26 +650,47 @@
               <div class="step-inner">
                 <div class="step-body">
                   <span class="step-kicker">步骤 11</span>
-                  <h3>填写标识、Base URL、Key 和模型</h3>
-                  <p>文档里给了一个推荐标识：<code>wuzu-API</code>。完成自定义配置后，再把 Base URL、Key 和模型补齐，模型建议填 <code>GPT-5.4</code>，然后点击添加即可。</p>
+                  <h3>填写标识、配置 baseurl + key，配置模型为 GPT-5.4</h3>
+                  <div class="step-summary">
+                    <strong>你要做什么</strong>
+                    <p>填写标识：<code>wuzu-API</code>。配置 baseurl + key。配置模型为 <code>GPT-5.4</code>。点击添加即可。</p>
+                  </div>
+                  <div class="step-grid">
+                    <div class="mini-card">
+                      <strong>标识</strong>
+                      <p><code>wuzu-API</code></p>
+                    </div>
+                    <div class="mini-card">
+                      <strong>模型</strong>
+                      <p><code>GPT-5.4</code></p>
+                    </div>
+                  </div>
                   <div class="code-line">标识：wuzu-API | 模型：GPT-5.4</div>
                 </div>
                 <div class="step-media">
                   <div class="gallery">
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/22-provider-name-wuzu-api.png" alt="填写标识 wuzu-API" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/22-provider-name-wuzu-api.png" data-zoom-title="图 22：填写标识 wuzu-API" data-zoom-alt="填写标识 wuzu-API">
+                        <img src="assets/guide-images/22-provider-name-wuzu-api.png" alt="填写标识 wuzu-API" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/23-configure-baseurl-and-key.png" alt="配置 Base URL 和 Key" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/23-configure-baseurl-and-key.png" data-zoom-title="图 23：配置 Base URL 和 Key" data-zoom-alt="配置 Base URL 和 Key">
+                        <img src="assets/guide-images/23-configure-baseurl-and-key.png" alt="配置 Base URL 和 Key" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/24-configure-model-gpt-5.4.png" alt="配置模型为 GPT-5.4" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/24-configure-model-gpt-5.4.png" data-zoom-title="图 24：配置模型为 GPT-5.4" data-zoom-alt="配置模型为 GPT-5.4">
+                        <img src="assets/guide-images/24-configure-model-gpt-5.4.png" alt="配置模型为 GPT-5.4" loading="lazy" />
+                      </button>
                     </div>
                     <div class="step-media-frame">
-                      <img src="assets/guide-images/25-confirm-add-provider.png" alt="点击添加完成" loading="lazy" />
+                      <button class="step-media-button" type="button" data-zoom-src="assets/guide-images/25-confirm-add-provider.png" data-zoom-title="图 25：点击添加完成" data-zoom-alt="点击添加完成">
+                        <img src="assets/guide-images/25-confirm-add-provider.png" alt="点击添加完成" loading="lazy" />
+                      </button>
                     </div>
                   </div>
-                  <div class="step-media-caption">图 22-25：填好标识、Base URL、Key 和模型后，点击添加完成。</div>
+                  <div class="step-media-caption">图 22-25：填写标识：wuzu-API，配置 baseurl + key，配置模型为 GPT-5.4，点击添加即可。</div>
                 </div>
               </div>
             </article>
@@ -470,7 +702,7 @@
         <div class="downloads-header">
           <div>
             <h2>下载资源</h2>
-            <p>这些文件都已经在项目里了，部署到服务器后就是本地下载，不受飞书链接失效影响。</p>
+            <p>安装包、zip 和截图都已经本地化，部署到服务器后不会再被飞书图片或外链失效影响。</p>
           </div>
         </div>
         <div class="download-grid">
@@ -502,24 +734,24 @@
       </section>
 
       <section class="faq" id="faq">
-        <h2>注意事项</h2>
-        <p class="faq-intro">这几条是最容易出问题的地方，提前看一眼能省不少时间。</p>
+        <h2>避坑区</h2>
+        <p class="faq-intro">这不是补充阅读，而是最容易踩坑的几条。遇到下面这些情况，先按这里排，再带截图进售后群。</p>
         <div class="faq-grid">
-          <article class="faq-item">
-            <h3>为什么推荐主站域名？</h3>
-            <p>文档里已经说明，加速域名会有波动。做工具接入和长期使用时，默认填主站最稳。</p>
+          <article class="faq-item hot">
+            <h3>CCS 的 API 请求地址改成主站域名</h3>
+            <p>请直接在 ccs，API 请求地址，修改成：https://wuzuapi.com。</p>
           </article>
-          <article class="faq-item">
-            <h3>为什么我明明有 key 还失败？</h3>
-            <p>先检查是不是选错了分组，或者把生图 key 和对话 key 混用了。</p>
+          <article class="faq-item hot">
+            <h3>分组需要选择自己的订阅分组</h3>
+            <p>注意：分组需要选择自己的订阅分组，余额组只限余额使用。</p>
           </article>
-          <article class="faq-item">
-            <h3>模型改完为什么还是旧结果？</h3>
-            <p>CCS 文档里强调了很多次，保存后要重启 IDE，很多人就卡在这一步。</p>
+          <article class="faq-item hot">
+            <h3>保存之后，重启 ide 软件即可</h3>
+            <p>在模型名称处将 gpt-5.4 改成 gpt-5.4-2026-03-05 后，保存之后，重启 ide 软件即可。</p>
           </article>
-          <article class="faq-item">
-            <h3>OpenCode 最容易错在哪？</h3>
-            <p>不是 Base URL，而是 JSON 没复制完整，或者粘贴前没有把原内容删干净。</p>
+          <article class="faq-item hot">
+            <h3>生图 key 跟对话 key 不可以一样</h3>
+            <p>生图 key 跟对话 key 不可以一样，必须创建两个 key 进行使用！！</p>
           </article>
         </div>
       </section>
@@ -532,6 +764,19 @@
       <p>教程页资源全部来自项目本地文件，适合直接部署到服务器长期使用。</p>
     </div>
   </footer>
+
+  <div class="image-modal" id="imageModal" aria-hidden="true">
+    <div class="image-modal-backdrop" data-modal-close="true"></div>
+    <div class="image-modal-dialog" role="dialog" aria-modal="true" aria-label="教程图片预览">
+      <div class="image-modal-toolbar">
+        <div class="image-modal-title" id="imageModalTitle">教程截图</div>
+        <button class="image-modal-close" id="imageModalClose" type="button">关闭</button>
+      </div>
+      <div class="image-modal-viewport">
+        <img id="imageModalImage" alt="" />
+      </div>
+    </div>
+  </div>
 
   <script src="assets/guide.js"></script>
 </body>
