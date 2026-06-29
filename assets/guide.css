@@ -93,11 +93,32 @@ code {
   color: rgba(255, 248, 251, 0.9);
 }
 
+.group-entry-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
 .contact-inline-link {
   color: #fff;
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.contact-inline-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-decoration: none;
+  text-underline-offset: 0;
+  white-space: nowrap;
 }
 
 .contact-inline-link:hover,
@@ -354,11 +375,33 @@ code {
   color: rgba(255, 248, 251, 0.92);
 }
 
+.group-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .focus-link {
   color: #fff;
   font-weight: 800;
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+.focus-link-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-decoration: none;
+  text-underline-offset: 0;
+  white-space: nowrap;
 }
 
 .focus-link:hover,
