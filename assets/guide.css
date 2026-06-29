@@ -682,6 +682,7 @@ code {
 }
 
 .file-chips a {
+  gap: 10px;
   text-decoration: none;
   color: var(--text);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
@@ -694,6 +695,26 @@ code {
   border-color: rgba(123, 91, 58, 0.22);
   background: #fffdfa;
   outline: none;
+}
+
+.file-chip-label {
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: #fffdf9;
+  font-size: 12px;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+.file-chip-name {
+  display: inline-flex;
+  align-items: center;
+  word-break: break-all;
 }
 
 .download-inline {
