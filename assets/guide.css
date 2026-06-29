@@ -448,8 +448,8 @@ code {
 }
 
 .domain-pills {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -470,7 +470,7 @@ code {
   font-size: 14px;
   font-weight: 800;
   line-height: 1.6;
-  flex: 1 1 260px;
+  width: 100%;
 }
 
 .domain-pill code {
