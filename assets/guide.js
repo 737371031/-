@@ -170,7 +170,8 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-if (revealNodes.length) {
+if (revealNodes.length && "IntersectionObserver" in window) {
+  document.documentElement.classList.add("reveal-motion");
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -184,9 +185,14 @@ if (revealNodes.length) {
   );
 
   revealNodes.forEach((node) => revealObserver.observe(node));
+  window.setTimeout(() => {
+    revealNodes.forEach((node) => node.classList.add("is-visible"));
+  }, 900);
+} else {
+  revealNodes.forEach((node) => node.classList.add("is-visible"));
 }
 
-if (spyNodes.length) {
+if (spyNodes.length && "IntersectionObserver" in window) {
   const spyObserver = new IntersectionObserver(
     (entries) => {
       const visibleEntries = entries
