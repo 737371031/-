@@ -297,3 +297,4 @@ sudo systemctl status model-catalog
 - 按 `工具文件/WUZU-IMAGE.html` 的 API 调用文档修复 GPT Image 2 生图 skill：补齐 `model_config_key`、自定义宽高、`output_width/output_height`、`aspect_ratio/resolution`、`response_format`、异步任务轮询和返回解析兼容。
 - 同步修复生图 skill 的本地网页版本，新增对应高级参数入口，数量上限调整为 `1-9`，并保留旧版比例转像素开关用于兼容旧流程。
 - 重新生成 `downloads/gpt-image-2-generator-share-20260520-140609.zip` 分享包，包内保留顶层目录结构，并排除输出图片、历史记录、缓存文件和真实 token。
+- 固定 GPT Image 2 skill 的 API `model` 字段为 `gpt-image-2`，网页和 CLI 不再允许改模型名，高清/4K 等差异统一通过 `model_config_key` 传入。
