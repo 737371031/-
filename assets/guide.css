@@ -595,6 +595,7 @@ code {
 }
 
 .file-chips span,
+.file-chips a,
 .download-inline span {
   min-height: 40px;
   padding: 0 14px;
@@ -605,6 +606,21 @@ code {
   border: 1px solid rgba(123, 91, 58, 0.14);
   font-family: Consolas, "SFMono-Regular", monospace;
   font-size: 14px;
+}
+
+.file-chips a {
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.file-chips a:hover,
+.file-chips a:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(53, 34, 17, 0.08);
+  border-color: rgba(123, 91, 58, 0.22);
+  background: #fffdfa;
+  outline: none;
 }
 
 .download-inline {
