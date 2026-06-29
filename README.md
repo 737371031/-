@@ -294,3 +294,6 @@ sudo systemctl status model-catalog
 - 重做了教程页视觉层级，强化售后群提示、重点提醒和步骤编号，同时补充滚动显现、目录高亮、滚动进度和图片上一张/下一张放大预览。
 - 参考成熟设计系统的中性色、功能色和主色分工，重做 `guide.html` 的现代化配色，去掉旧暖棕/玫红风格，改为冷白底、蓝青主色、克制红色警告和更轻的卡片阴影。
 - 修复教程目录跳转不稳定的问题：改为脚本精确计算吸顶头部偏移，补充 hash 直达校准、底部滚动缓冲，并给教程截图写入宽高以避免懒加载导致锚点偏移。
+- 按 `工具文件/WUZU-IMAGE.html` 的 API 调用文档修复 GPT Image 2 生图 skill：补齐 `model_config_key`、自定义宽高、`output_width/output_height`、`aspect_ratio/resolution`、`response_format`、异步任务轮询和返回解析兼容。
+- 同步修复生图 skill 的本地网页版本，新增对应高级参数入口，数量上限调整为 `1-9`，并保留旧版比例转像素开关用于兼容旧流程。
+- 重新生成 `downloads/gpt-image-2-generator-share-20260520-140609.zip` 分享包，包内保留顶层目录结构，并排除输出图片、历史记录、缓存文件和真实 token。
