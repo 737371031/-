@@ -34,7 +34,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  scroll-padding-top: calc(var(--header-offset) + 18px);
 }
 
 body {
@@ -51,6 +52,7 @@ body.modal-open {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -516,7 +518,7 @@ code {
   grid-template-columns: 272px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
-  padding-bottom: 46px;
+  padding-bottom: max(46px, 34vh);
 }
 
 .doc-toc {
@@ -525,6 +527,8 @@ code {
 }
 
 .toc-panel {
+  max-height: calc(100vh - var(--header-offset) - 24px);
+  overflow-y: auto;
   border-radius: 18px;
   padding: 20px;
   background: rgba(255, 255, 255, 0.92);

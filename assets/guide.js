@@ -9,8 +9,69 @@ const revealNodes = document.querySelectorAll(".reveal-on-scroll");
 const spyNodes = document.querySelectorAll("[data-spy]");
 const tocLinks = document.querySelectorAll(".toc-panel a");
 const progressBar = document.getElementById("scrollProgressBar");
+const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
 let activeMediaIndex = -1;
+let isAnchorScrolling = false;
+let anchorScrollTimer = 0;
+
+function normalizeHash(hash) {
+  if (!hash || hash === "#") return "";
+  return hash.startsWith("#") ? hash : `#${hash}`;
+}
+
+function getAnchorOffset() {
+  const pageHeader = document.querySelector(".page-header");
+  const headerHeight = pageHeader?.getBoundingClientRect().height || 0;
+
+  return Math.ceil(headerHeight + 18);
+}
+
+function scrollToAnchor(hash, shouldPushState = true) {
+  const normalizedHash = normalizeHash(hash);
+  const id = decodeURIComponent(normalizedHash.replace(/^#/, ""));
+  const target = id ? document.getElementById(id) : null;
+  if (!target) return;
+
+  const alignTarget = () => {
+    const offset = getAnchorOffset();
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(top, 0), behavior: "auto" });
+    updateScrollProgress();
+  };
+
+  isAnchorScrolling = true;
+  window.clearTimeout(anchorScrollTimer);
+  setActiveTocLink(id);
+  alignTarget();
+
+  if (shouldPushState) {
+    history.pushState(null, "", normalizedHash);
+  }
+
+  requestAnimationFrame(() => {
+    alignTarget();
+    anchorScrollTimer = window.setTimeout(() => {
+      alignTarget();
+      isAnchorScrolling = false;
+    }, 180);
+  });
+}
+
+function settleAnchorScroll(hash, shouldPushState = true) {
+  const normalizedHash = normalizeHash(hash);
+  if (!normalizedHash) return;
+
+  scrollToAnchor(normalizedHash, shouldPushState);
+
+  [90, 280, 700].forEach((delay) => {
+    window.setTimeout(() => {
+      if (window.location.hash === normalizedHash) {
+        scrollToAnchor(normalizedHash, false);
+      }
+    }, delay);
+  });
+}
 
 function openModalByIndex(index) {
   if (!modal || !modalImage || !mediaButtons[index]) return;
@@ -61,6 +122,16 @@ function updateScrollProgress() {
 mediaButtons.forEach((button, index) => {
   button.addEventListener("click", () => {
     openModalByIndex(index);
+  });
+});
+
+anchorLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const hash = link.getAttribute("href");
+    if (!hash || hash === "#") return;
+
+    event.preventDefault();
+    settleAnchorScroll(hash);
   });
 });
 
@@ -123,6 +194,7 @@ if (spyNodes.length) {
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
 
       if (visibleEntries[0]) {
+        if (isAnchorScrolling) return;
         setActiveTocLink(visibleEntries[0].target.id);
       }
     },
@@ -138,4 +210,20 @@ if (spyNodes.length) {
 
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress);
+window.addEventListener("hashchange", () => {
+  if (window.location.hash) {
+    settleAnchorScroll(window.location.hash, false);
+  }
+});
+
+window.addEventListener("load", () => {
+  if (window.location.hash) {
+    settleAnchorScroll(window.location.hash, false);
+  }
+});
+
 updateScrollProgress();
+
+if (window.location.hash) {
+  window.setTimeout(() => settleAnchorScroll(window.location.hash, false), 80);
+}
