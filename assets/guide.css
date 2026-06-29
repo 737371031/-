@@ -479,6 +479,16 @@ code {
   background: linear-gradient(180deg, rgba(255, 243, 230, 0.98), rgba(255, 252, 247, 0.98));
 }
 
+.callout-block-danger {
+  background: linear-gradient(180deg, rgba(165, 40, 75, 0.12), rgba(255, 248, 250, 0.98));
+  border-color: rgba(165, 40, 75, 0.22);
+}
+
+.callout-block-danger p {
+  color: #731f35;
+  font-weight: 700;
+}
+
 .action-tag {
   width: fit-content;
   min-height: 42px;
