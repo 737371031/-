@@ -220,6 +220,45 @@
       overflow: hidden;
     }
 
+    .entry-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(39, 88, 167, 0.08), rgba(15, 118, 110, 0.12));
+      box-shadow: var(--shadow);
+    }
+
+    .entry-banner h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .entry-banner p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .entry-banner .btn {
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -433,6 +472,11 @@
         grid-template-columns: 1fr;
       }
 
+      .entry-banner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
       table,
       thead,
       tbody,
@@ -550,6 +594,14 @@
         <div class="stat-label">维护</div>
         <div class="stat-value" id="offlineCount">0</div>
       </div>
+    </section>
+
+    <section class="entry-banner" aria-label="教程入口">
+      <div>
+        <h2>需要图文教程？</h2>
+        <p>已经整理成独立教程页，包含 API Key 创建、CCS 接入、Codex 生图 Skill、OpenCode 接入和本地下载资源。</p>
+      </div>
+      <a class="btn" href="guide.html">打开教程页</a>
     </section>
 
     <section class="toolbar" aria-label="筛选">
