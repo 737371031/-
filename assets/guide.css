@@ -93,6 +93,19 @@ code {
   color: rgba(255, 248, 251, 0.9);
 }
 
+.contact-inline-link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-inline-link:hover,
+.contact-inline-link:focus-visible {
+  color: #fffdf9;
+  outline: none;
+}
+
 .contact-banner-action {
   min-height: 44px;
   padding: 0 18px;
@@ -339,6 +352,56 @@ code {
 .focus-card-hot p,
 .focus-card-hot small {
   color: rgba(255, 248, 251, 0.92);
+}
+
+.focus-link {
+  color: #fff;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.focus-link:hover,
+.focus-link:focus-visible {
+  color: #fffdf9;
+  outline: none;
+}
+
+.domain-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.domain-pills-stack {
+  margin-bottom: 12px;
+}
+
+.domain-pill {
+  min-height: 42px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(123, 91, 58, 0.12);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.domain-pill code {
+  font-size: 14px;
+}
+
+.domain-pill-accent {
+  background: rgba(197, 101, 29, 0.12);
+  color: var(--accent-deep);
+}
+
+.domain-pill-danger {
+  background: rgba(165, 40, 75, 0.12);
+  border-color: rgba(165, 40, 75, 0.18);
+  color: #7a2038;
 }
 
 .doc-layout {
