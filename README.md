@@ -299,3 +299,4 @@ sudo systemctl status model-catalog
 - 重新生成 `downloads/gpt-image-2-generator-share-20260520-140609.zip` 分享包，包内保留顶层目录结构，并排除输出图片、历史记录、缓存文件和真实 token。
 - 固定 GPT Image 2 skill 的 API `model` 字段为 `gpt-image-2`，网页和 CLI 不再允许改模型名，高清/4K 等差异统一通过 `model_config_key` 传入。
 - 修复生图网页版生成接口仍向脚本传入旧 `model` 参数导致 `generate_image() got an unexpected keyword argument 'model'` 的 500 错误。
+- 修复 GPT Image 2 选择 `quality=4k` 但未明确传 4K 分辨率的问题：CLI 和网页默认按质量档补 `aspect_ratio/resolution`，4K 自动补 `model_config_key=gpt-image-2-[c4k]`，网页新增自动、手动最长边、手动宽高和原样传入四种分辨率控制，并展示请求尺寸与实际图片像素。
