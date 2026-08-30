@@ -270,6 +270,45 @@ sudo systemctl status model-catalog
 
 ## 更新记录
 
+### 2026-08-30
+
+- 已将本工具部署目标确定为 `47.242.123.232`，域名为 `https://mode.wuzuapi.com/`。
+- 部署结构：`/opt/model-catalog` + `model-catalog.service`，Python 服务仅监听 `127.0.0.1:18080`，Nginx 独立反向代理 `mode.wuzuapi.com`，不改动原有 `wuzuapi.xyz` 站点。
+- 新增 `deploy/` 配置模板，包含 systemd 服务、Nginx ACME 临时配置、Nginx 正式配置和 Sub2API 环境变量模板。
+- Sub2API 管理员 key 不写入仓库；服务器上的 `/etc/model-catalog.env` 需要手动填入 `SUB2API_ADMIN_KEY` 后执行 `sudo systemctl restart model-catalog`。
+- 修复 Python HTTP 日志处理状态码时将 `%d` 数值误转字符串的问题，避免错误请求触发 systemd 日志异常。
+
+#### 已部署服务器上的 Sub2API 配置
+
+SSH 登录 `47.242.123.232` 后执行：
+
+```bash
+sudo nano /etc/model-catalog.env
+```
+
+至少填写：
+
+```env
+SUB2API_BASE_URL=https://wuzuapi.com
+SUB2API_ADMIN_KEY=替换成你的Sub2API管理员key
+SUB2API_ADMIN_KEY_HEADER=x-api-key
+SUB2API_API_PREFIX=/api/v1
+SUB2API_AUTH_ME_PATH=/auth/me
+SELF_SERVICE_API_PATH=/self-api
+SELF_SERVICE_COOKIE_PATH=/
+```
+
+保存后执行：
+
+```bash
+sudo chmod 600 /etc/model-catalog.env
+sudo systemctl restart model-catalog
+sudo systemctl status model-catalog --no-pager
+curl http://127.0.0.1:18080/self-api?action=status
+```
+
+返回 `"configured":true` 就表示 Sub2API 地址和管理员 key 已被服务读取。随后打开 `https://mode.wuzuapi.com/admin.html` 设置本工具自己的管理员密码；该密码与 Sub2API 管理员 key 是两套独立凭据。
+
 ### 2026-06-19
 
 - 初始化 Git 上传准备。

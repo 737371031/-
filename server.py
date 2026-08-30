@@ -404,7 +404,11 @@ class ModelAdminHandler(SimpleHTTPRequestHandler):
         super().end_headers()
 
     def log_message(self, format, *args):
-        sanitized_args = tuple(redact_sensitive(str(arg)) for arg in args)
+        # Preserve numeric arguments because BaseHTTPRequestHandler formats status codes with %d.
+        sanitized_args = tuple(
+            redact_sensitive(arg) if isinstance(arg, str) else arg
+            for arg in args
+        )
         super().log_message(format, *sanitized_args)
 
     def do_GET(self):
