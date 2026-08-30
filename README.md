@@ -278,6 +278,7 @@ sudo systemctl status model-catalog
 - Sub2API 管理员 key 不写入仓库；服务器上的 `/etc/model-catalog.env` 需要手动填入 `SUB2API_ADMIN_KEY` 后执行 `sudo systemctl restart model-catalog`。
 - 修复 Python HTTP 日志处理状态码时将 `%d` 数值误转字符串的问题，避免错误请求触发 systemd 日志异常。
 - 已修正 Sub2API 用户菜单“自助重置订阅（重要）”的跳转地址为 `https://mode.wuzuapi.com/subscriptions.html?endpoint=/self-api`；Sub2API 前端会自动追加当前用户的 `user_id` 和登录 token。
+- 修复 Sub2API 上游拒绝默认 `Python-urllib` User-Agent 导致自助登录返回 502 的问题，并加强请求日志中的 token/Authorization 脱敏。
 
 #### 已部署服务器上的 Sub2API 配置
 

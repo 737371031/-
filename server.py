@@ -7,6 +7,7 @@ import hmac
 import json
 import mimetypes
 import os
+import re
 import secrets
 import socketserver
 import tempfile
@@ -256,8 +257,16 @@ def sub2api_configured() -> bool:
 
 def redact_sensitive(value: str) -> str:
     redacted = str(value)
-    for key in ("token", "admin_key", "x-api-key", "authorization"):
-        redacted = redacted.replace(key + "=", key + "=REDACTED")
+    redacted = re.sub(
+        r"(?i)(token|admin_key|x-api-key)=([^&\s]*)",
+        r"\1=REDACTED",
+        redacted,
+    )
+    redacted = re.sub(
+        r"(?i)(authorization):\s*[^\s,]+(?:\s+[^\s,]+)?",
+        r"\1: REDACTED",
+        redacted,
+    )
     return redacted
 
 
@@ -344,7 +353,10 @@ def sub2api_request(method: str, path: str, body=None, bearer_token: str = "", a
     if not base:
         raise RuntimeError("未配置 SUB2API_BASE_URL")
     url = base + sub2api_api_prefix() + path
-    headers = {"Accept": "application/json"}
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "model-catalog/1.0",
+    }
     data = None
     if body is not None:
         data = json.dumps(body, ensure_ascii=False).encode("utf-8")
