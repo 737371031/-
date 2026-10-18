@@ -270,6 +270,10 @@ sudo systemctl status model-catalog
 
 ## 更新记录
 
+### 2026-10-18
+
+- 教程页统一使用 `https://wuzuapi.com`，移除 `wuzuapi.xyz` 和“需要开魔法”的旧说明，明确国内网络可直接访问。
+
 ### 2026-08-30
 
 - 已将本工具部署目标确定为 `47.242.123.232`，域名为 `https://mode.wuzuapi.com/`。
